@@ -1,2 +1,2 @@
 # OSU-RM-tpu
-A auto detection program running on google coral tpu
+An auto detection program running on google coral tpu
