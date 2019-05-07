@@ -76,7 +76,7 @@ def main():
                         help='number of classes with highest score to display')
     parser.add_argument('--threshold', type=float, default=0.1,
                         help='class score threshold')
-    parser.add_argument('--source', default='/dev/video1: YUY2: 800x600: 24/1',
+    parser.add_argument('--source', default='/dev/video0: YUY2: 640x480: 30/1',
                         help='video input source')
 
     args = parser.parse_args()
