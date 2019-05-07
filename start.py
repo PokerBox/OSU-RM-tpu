@@ -1,5 +1,5 @@
 from connection import SerialThread
-import detect
+import detect_test
 
 try:
     serial = SerialThread(port="/dev/ttyACM0", connect=True,
@@ -11,4 +11,4 @@ except:
 # connection
 serial.start()
 
-detect.main()
+detect.main(serial)
