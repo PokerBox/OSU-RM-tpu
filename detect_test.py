@@ -32,7 +32,7 @@ import svgwrite
 import imp
 import os
 from edgetpu.detection.engine import DetectionEngine
-import gstreamer_test
+import gstreamer_test as gstreamer
 import math
 
 YAW_MID = 900
