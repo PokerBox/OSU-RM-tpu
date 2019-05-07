@@ -91,17 +91,19 @@ def main():
                                       keep_aspect_ratio=True, relative_coord=True,
                                       top_k=args.top_k)
         end_time = time.monotonic()
+
         if objs:
             print()
-        for obj in objs:
-            if labels:
-                print(labels[obj.label_id], 'score = ', obj.score)
-            else:
-                print('score = ', obj.score)
-            box = obj.bounding_box.flatten().tolist()
-            print(box)
+            for obj in objs:
+                if labels:
+                    print(labels[obj.label_id], 'score = ', obj.score)
+                else:
+                    print('score = ', obj.score)
+                box = obj.bounding_box.flatten().tolist()
+                print(box)
         else:
             print('No object detected!')
+
         text_lines = [
             'Inference: %.2f ms' % ((end_time - start_time) * 1000),
             'FPS: %.2f fps' % (1.0/(end_time - last_time)),
