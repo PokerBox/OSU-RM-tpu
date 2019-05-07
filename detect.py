@@ -66,7 +66,7 @@ def generate_svg(dwg, objs, labels, text_lines):
 def main():
     default_model_dir = 'models'
     default_model = 'mobilenet_ssd_v2_face_quant_postprocess_edgetpu.tflite'
-    default_labels = 'coco_labels.txt'
+    default_labels = 'face_labels.txt'
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', help='.tflite model path',
                         default=os.path.join(default_model_dir, default_model))
