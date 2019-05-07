@@ -33,6 +33,7 @@ import imp
 import os
 from edgetpu.detection.engine import DetectionEngine
 import gstreamer
+import math
 
 
 def load_labels(path):
@@ -40,6 +41,19 @@ def load_labels(path):
     with open(path, 'r', encoding='utf-8') as f:
         lines = (p.match(line).groups() for line in f.readlines())
         return {int(num): text.strip() for num, text in lines}
+
+
+def numToHex(num):
+    if(num < 0):
+        num = 0
+    num = bin(num)
+    num = num[2: len(num)]
+    data = []
+    for i in range(16-len(num)):
+        num = '0' + num
+    data.append(int(num[0:8], 2))
+    data.append(int(num[8:16], 2))
+    return data
 
 
 def shadow_text(dwg, x, y, text, font_size=20):
@@ -102,11 +116,15 @@ def main():
                 else:
                     print('score = ', obj.score)
                 [x1, y1, x2, y2] = obj.bounding_box.flatten().tolist()
-                x1 *= 640
-                y1 *= 480
-                x2 *= 640
-                y2 *= 480
                 print(x1, y1, x2, y2)
+                # calculate pixel coords
+                pix_x = (x1 + x2) * 320  # 640/2 = 320
+                pix_y = (y1 + y2) * 240  # 480/2 = 240
+                # calculate angles with respect to center
+                # TODO: an accurate parameter replacing 416 needs to be calculated
+                yaw = math.atan((pix_x - 640./2) / 416) * 1800 / math.pi + 900
+                pitch = math.atan((pix_y - 480./2) / 416) * \
+                    1800 / math.pi + 300
         else:
             print('No object detected!')
 
