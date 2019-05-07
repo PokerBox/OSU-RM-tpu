@@ -40,7 +40,7 @@ def on_bus_message(bus, message, loop):
     return True
 
 
-def on_new_sample(sink, overlay, screen_size, appsink_size, user_function):
+def on_new_sample(sink, overlay, screen_size, appsink_size, user_function, serial):
     sample = sink.emit('pull-sample')
     buf = sample.get_buffer()
     result, mapinfo = buf.map(Gst.MapFlags.READ)
@@ -65,7 +65,7 @@ def detectCoralDevBoard():
     return False
 
 
-def run_pipeline(user_function,
+def run_pipeline(user_function, serial,
                  src_size=(640, 480),
                  appsink_size=(320, 180)):
     PIPELINE = 'v4l2src device=/dev/video1 ! {src_caps} ! {leaky_q} '
@@ -104,7 +104,7 @@ def run_pipeline(user_function,
     appsink = pipeline.get_by_name('appsink')
     appsink.connect('new-sample', partial(on_new_sample,
                                           overlay=overlay, screen_size=src_size,
-                                          appsink_size=appsink_size, user_function=user_function))
+                                          appsink_size=appsink_size, user_function=user_function, serial=serial))
     loop = GObject.MainLoop()
 
     # Set up a pipeline bus watch to catch errors.
