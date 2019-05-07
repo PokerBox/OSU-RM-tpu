@@ -35,25 +35,15 @@ from edgetpu.detection.engine import DetectionEngine
 import gstreamer
 import math
 
+YAW_MID = 900
+PITCH_MID = 300
+
 
 def load_labels(path):
     p = re.compile(r'\s*(\d+)(.+)')
     with open(path, 'r', encoding='utf-8') as f:
         lines = (p.match(line).groups() for line in f.readlines())
         return {int(num): text.strip() for num, text in lines}
-
-
-def numToHex(num):
-    if(num < 0):
-        num = 0
-    num = bin(num)
-    num = num[2: len(num)]
-    data = []
-    for i in range(16-len(num)):
-        num = '0' + num
-    data.append(int(num[0:8], 2))
-    data.append(int(num[8:16], 2))
-    return data
 
 
 def shadow_text(dwg, x, y, text, font_size=20):
@@ -77,7 +67,7 @@ def generate_svg(dwg, objs, labels, text_lines):
                          fill='red', fill_opacity=0.3, stroke='white'))
 
 
-def main():
+def main(serial):
     default_model_dir = 'models'
     default_model = 'mobilenet_ssd_v2_face_quant_postprocess_edgetpu.tflite'
     default_labels = 'face_labels.txt'
@@ -100,7 +90,7 @@ def main():
 
     last_time = time.monotonic()
 
-    def user_callback(image, svg_canvas):
+    def user_callback(image, svg_canvas, serial):
         nonlocal last_time
         start_time = time.monotonic()
         objs = engine.DetectWithImage(image, threshold=args.threshold,
@@ -121,10 +111,13 @@ def main():
                 pix_x = (x1 + x2) * 320  # 640/2 = 320
                 pix_y = (y1 + y2) * 240  # 480/2 = 240
                 # calculate angles with respect to center
-                # TODO: an accurate parameter replacing 416 needs to be calculated
-                yaw = math.atan((pix_x - 640./2) / 416) * 1800 / math.pi + 900
-                pitch = math.atan((pix_y - 480./2) / 416) * \
-                    1800 / math.pi + 300
+                # TODO: an accurate parameter replacing 480 needs to be calculated
+                yaw = math.atan((pix_x - 640./2) / 480) * \
+                    1800 / math.pi + YAW_MID
+                pitch = math.atan((pix_y - 480./2) / 480) * \
+                    1800 / math.pi + PITCH_MID
+                serial.send_yaw = yaw
+                serial.send_pitch = pitch
         else:
             print('No object detected!')
 
