@@ -129,8 +129,7 @@ def main(serial):
         last_time = end_time
         generate_svg(svg_canvas, objs, labels, text_lines)
 
-    result = gstreamer.run_pipeline(
-        user_callback, (640, 480), (320, 180), serial)
+    result = gstreamer.run_pipeline(user_callback, serial)
 
 
 if __name__ == '__main__':
