@@ -76,8 +76,6 @@ def main():
                         help='number of classes with highest score to display')
     parser.add_argument('--threshold', type=float, default=0.1,
                         help='class score threshold')
-    parser.add_argument('--source', default='/dev/video1:YUY2:800x600:24/1',
-                        help='video input source')
 
     args = parser.parse_args()
 
@@ -93,7 +91,7 @@ def main():
         start_time = time.monotonic()
         objs = engine.DetectWithImage(image, threshold=args.threshold,
                                       keep_aspect_ratio=True, relative_coord=True,
-                                      top_k=args.top_k)
+                                      top_k=args.top_k, )
         end_time = time.monotonic()
 
         if objs:
