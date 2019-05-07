@@ -72,7 +72,7 @@ def main():
                         default=os.path.join(default_model_dir, default_model))
     parser.add_argument('--labels', help='label file path',
                         default=os.path.join(default_model_dir, default_labels))
-    parser.add_argument('--top_k', type=int, default=3,
+    parser.add_argument('--top_k', type=int, default=5,
                         help='number of classes with highest score to display')
     parser.add_argument('--threshold', type=float, default=0.1,
                         help='class score threshold')
@@ -81,7 +81,8 @@ def main():
 
     args = parser.parse_args()
 
-    print("Loading %s with %s labels." % (args.model, args.labels))
+    print("Loading %s with %s labels. video: %s" %
+          (args.model, args.labels, args.source))
     engine = DetectionEngine(args.model)
     labels = load_labels(args.labels)
 
