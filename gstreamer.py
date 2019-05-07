@@ -17,7 +17,6 @@ from gi.repository import GLib, GObject, Gst, GstBase
 import sys
 from functools import partial
 import svgwrite
-from connection import SerialThread
 
 import gi
 gi.require_version('Gst', '1.0')
@@ -68,7 +67,7 @@ def detectCoralDevBoard():
 
 def run_pipeline(user_function,
                  src_size=(640, 480),
-                 appsink_size=(320, 180), serial=serial):
+                 appsink_size=(320, 180)):
     PIPELINE = 'v4l2src device=/dev/video1 ! {src_caps} ! {leaky_q} '
     if detectCoralDevBoard():
         SRC_CAPS = 'video/x-raw,format=YUY2,width={width},height={height},framerate=30/1'
@@ -105,7 +104,7 @@ def run_pipeline(user_function,
     appsink = pipeline.get_by_name('appsink')
     appsink.connect('new-sample', partial(on_new_sample,
                                           overlay=overlay, screen_size=src_size,
-                                          appsink_size=appsink_size, user_function=user_function), serial=serial)
+                                          appsink_size=appsink_size, user_function=user_function))
     loop = GObject.MainLoop()
 
     # Set up a pipeline bus watch to catch errors.
