@@ -79,8 +79,8 @@ def main():
 
     args = parser.parse_args()
 
-    print("Loading %s with %s labels. video: %s" %
-          (args.model, args.labels, args.source))
+    print("Loading %s with %s labels." %
+          (args.model, args.labels))
     engine = DetectionEngine(args.model)
     labels = load_labels(args.labels)
 
