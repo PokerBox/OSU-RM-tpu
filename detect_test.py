@@ -67,7 +67,7 @@ def generate_svg(dwg, objs, labels, text_lines):
                          fill='red', fill_opacity=0.3, stroke='white'))
 
 
-def main():
+def main(serial):
     default_model_dir = 'models'
     default_model = 'mobilenet_ssd_v2_face_quant_postprocess_edgetpu.tflite'
     default_labels = 'face_labels.txt'
@@ -90,7 +90,7 @@ def main():
 
     last_time = time.monotonic()
 
-    def user_callback(image, svg_canvas):
+    def user_callback(image, svg_canvas, serial):
         nonlocal last_time
         start_time = time.monotonic()
         objs = engine.DetectWithImage(image, threshold=args.threshold,
@@ -129,7 +129,7 @@ def main():
         last_time = end_time
         generate_svg(svg_canvas, objs, labels, text_lines)
 
-    result = gstreamer.run_pipeline(user_callback)
+    result = gstreamer.run_pipeline(user_callback, serial)
 
 
 if __name__ == '__main__':
