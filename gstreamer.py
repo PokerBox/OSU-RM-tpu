@@ -17,6 +17,7 @@ from gi.repository import GLib, GObject, Gst, GstBase
 import sys
 from functools import partial
 import svgwrite
+from connection import SerialThread
 
 import gi
 gi.require_version('Gst', '1.0')
