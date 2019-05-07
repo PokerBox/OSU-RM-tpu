@@ -40,7 +40,7 @@ def on_bus_message(bus, message, loop):
     return True
 
 
-def on_new_sample(sink, overlay, screen_size, appsink_size, user_function, serial):
+def on_new_sample(sink, overlay, screen_size, appsink_size, user_function):
     sample = sink.emit('pull-sample')
     buf = sample.get_buffer()
     result, mapinfo = buf.map(Gst.MapFlags.READ)
