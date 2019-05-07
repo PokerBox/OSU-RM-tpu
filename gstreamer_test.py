@@ -90,7 +90,8 @@ def run_pipeline(user_function, serial,
     SINK_CAPS = 'video/x-raw,format=RGB,width={width},height={height}'
     LEAKY_Q = 'queue max-size-buffers=1 leaky=downstream'
 
-    src_caps = SRC_CAPS.format(width=src_size[0], height=src_size[1])
+    # src_caps = SRC_CAPS.format(width=src_size[0], height=src_size[1])
+    src_caps = SRC_CAPS.format(width=640, height=480)
     dl_caps = DL_CAPS.format(width=appsink_size[0], height=appsink_size[1])
     sink_caps = SINK_CAPS.format(width=appsink_size[0], height=appsink_size[1])
     pipeline = PIPELINE.format(leaky_q=LEAKY_Q,
