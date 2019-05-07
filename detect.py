@@ -91,7 +91,7 @@ def main():
         start_time = time.monotonic()
         objs = engine.DetectWithImage(image, threshold=args.threshold,
                                       keep_aspect_ratio=True, relative_coord=True,
-                                      top_k=args.top_k, )
+                                      top_k=args.top_k)
         end_time = time.monotonic()
 
         if objs:
@@ -101,8 +101,12 @@ def main():
                     print(labels[obj.label_id], 'score = ', obj.score)
                 else:
                     print('score = ', obj.score)
-                box = obj.bounding_box.flatten().tolist()
-                print(box)
+                [x1, y1, x2, y2] = obj.bounding_box.flatten().tolist()
+                x1 *= 640
+                y1 *= 480
+                x2 *= 640
+                y2 *= 480
+                print(x1, y1, x2, y2)
         else:
             print('No object detected!')
 
