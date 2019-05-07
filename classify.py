@@ -37,7 +37,7 @@ def generate_svg(dwg, text_lines):
 
 
 def main():
-    default_model_dir = "../all_models"
+    default_model_dir = "models"
     default_model = 'mobilenet_v2_1.0_224_quant_edgetpu.tflite'
     default_labels = 'imagenet_labels.txt'
     parser = argparse.ArgumentParser()
