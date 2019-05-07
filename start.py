@@ -11,4 +11,4 @@ except:
 # connection
 serial.start()
 
-detect.main(serial)
+detect_test.main(serial)
