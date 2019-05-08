@@ -122,13 +122,13 @@ def main(serial):
                 serial.send_yaw = yaw
                 serial.send_pitch = pitch
         else:
-            print('No object detected!')
+            # print('No object detected!')
 
         text_lines = [
             'Inference: %.2f ms' % ((end_time - start_time) * 1000),
             'FPS: %.2f fps' % (1.0/(end_time - last_time)),
         ]
-        print(' '.join(text_lines))
+        # print(' '.join(text_lines))
         last_time = end_time
         generate_svg(svg_canvas, objs, labels, text_lines)
 
