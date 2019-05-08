@@ -108,8 +108,8 @@ def sendMessage(dev, yaw, pitch):
     send_data = [x[0], x[1], y[0], y[1], 0x00, 0x00, 0x00, 0x00]
 
     if len(send_data) == 8:
-        dev.send(Message(arbitration_id=0x300, dlc=8,
-                         data=send_data, extended_id=False))
+        # dev.send(Message(arbitration_id=0x300, dlc=8,
+                        #  data=send_data, extended_id=False))
         print('Send: ', send_yaw, send_pitch)
 
 
