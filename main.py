@@ -132,7 +132,7 @@ def choose_obj(objs, start_time):
     chosen_obj = objs[0]
     if len(objs) > 1:
         for obj in objs:
-            if distance_to_center(obj) < distance_to_center(choose_obj):
+            if distance_to_center(obj) < distance_to_center(chosen_obj):
                 chosen_obj = obj
     return chosen_obj
 
