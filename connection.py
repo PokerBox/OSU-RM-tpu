@@ -23,10 +23,8 @@ class SerialThread(threading.Thread):
 
         self.yaw = YAW_MID
         self.pitch = PITCH_MID
-        self.send_yaw = 0
-        self.send_pitch = 0
-        self.get_yaw = 0
-        self.get_pitch = 0
+        self.send_yaw = 123
+        self.send_pitch = 123
 
         self.sendData = []
 
@@ -103,7 +101,7 @@ class SerialThread(threading.Thread):
             count_plot += 1
             count_can += 1
 
-            if count_plot >= int(self.fps/30):
+            if count_plot >= int(self.fps/300):
                 count_plot = 0
                 if self.debug:
                     print('Send: %d %d Recieve: %d %d' % (
@@ -115,7 +113,6 @@ class SerialThread(threading.Thread):
                 # self.updateData(x, y)
                 # if self.debug:
                 #    print('Send FPS: %d' % (1./(time.time()-filter_time)))
-                filter_time = time.time()
                 if self.connect:
                     self.sendMessage()
 
