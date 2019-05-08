@@ -35,9 +35,13 @@ import os
 from edgetpu.detection.engine import DetectionEngine
 import gstreamer_test as gstreamer
 import math
+from can.interfaces import slcan
+from can import Message
 
 YAW_MID = 900
 PITCH_MID = 300
+PORT = ["/dev/ttyACM0", "/dev/ttyACM1"]
+DEBUG = True
 LOG_PATH = '~/OSU_RM_tpu/log/{date}'
 
 
@@ -69,7 +73,51 @@ def generate_svg(dwg, objs, labels, text_lines):
                          fill='red', fill_opacity=0.3, stroke='white'))
 
 
-def main(serial):
+def hexToNumArray(data):
+    nums = []
+    for i in range(4):
+        a = data[2*i: 2*i+2]
+        num1 = bin(a[0])[2:10]
+        num2 = bin(a[1])[2:10]
+        for i in range(8-len(num1)):
+            num1 = '0' + num1
+        for i in range(8-len(num2)):
+            num2 = '0' + num2
+        nums.append(int(num1 + num2, 2))
+    return nums
+
+
+def numToHex(num):
+    if(num < 0):
+        num = 0
+    num = bin(num)
+    num = num[2: len(num)]
+    data = []
+    for i in range(16-len(num)):
+        num = '0' + num
+    data.append(int(num[0:8], 2))
+    data.append(int(num[8:16], 2))
+    return data
+
+
+def sendMessage(dev, yaw, pitch):
+    send_yaw = int(yaw)
+    send_pitch = int(pitch)
+    x = numToHex(send_yaw)
+    y = numToHex(send_pitch)
+    send_data = [x[0], x[1], y[0], y[1], 0x00, 0x00, 0x00, 0x00]
+
+    if len(send_data) == 8:
+        dev.send(Message(arbitration_id=0x300, dlc=8,
+                         data=send_data, extended_id=False))
+        print('Send: ', send_yaw, send_pitch)
+
+
+def choose_obj(objs, start_time):
+    return objs[0]
+
+
+def main():
     default_model_dir = 'models'
     default_model = 'mobilenet_ssd_v2_face_quant_postprocess_edgetpu.tflite'
     default_labels = 'face_labels.txt'
@@ -85,14 +133,25 @@ def main(serial):
 
     args = parser.parse_args()
 
-    print("Loading %s with %s labels." %
-          (args.model, args.labels))
+    print("Loading %s with %s labels." % (args.model, args.labels))
     engine = DetectionEngine(args.model)
     labels = load_labels(args.labels)
 
     last_time = time.monotonic()
 
-    def user_callback(image, svg_canvas, serial):
+    try:
+        dev = slcan.slcanBus(PORT[0], bitrate=1000000)
+        dev.open()
+        print('Connection found at port ', PORT[0])
+    except:
+        dev = slcan.slcanBus(PORT[1], bitrate=1000000)
+        dev.open()
+        print('Connection found at port ', PORT[1])
+
+    yaw = YAW_MID
+    pitch = PITCH_MID
+
+    def user_callback(image, svg_canvas):
         nonlocal last_time
         start_time = time.monotonic()
         objs = engine.DetectWithImage(image, threshold=args.threshold,
@@ -101,28 +160,25 @@ def main(serial):
         end_time = time.monotonic()
 
         if objs:
-            # print()
-            for obj in objs:
-                # if labels:
-                #     print(labels[obj.label_id], 'score = ', obj.score)
-                # else:
-                #     print('score = ', obj.score)
-                [x1, y1, x2, y2] = obj.bounding_box.flatten().tolist()
-                # print(x1, y1, x2, y2)
-                # calculate pixel coords
-                pix_x = (x1 + x2) * 320  # 640/2 = 320
-                pix_y = (y1 + y2) * 240  # 480/2 = 240
-                # calculate angles with respect to center
-                # TODO: an accurate parameter replacing 480 needs to be calculated
-                yaw = math.atan((pix_x - 640./2) / 480) * \
-                    1800 / math.pi + YAW_MID
-                pitch = math.atan((pix_y - 480./2) / 480) * \
-                    1800 / math.pi + PITCH_MID
-
-                serial.yaw = yaw
-                serial.pitch = pitch
-        # else:
-            # print('No object detected!')
+            obj = choose_obj(objs, start_time)
+            # if labels:
+            #     print(labels[obj.label_id], 'score = ', obj.score)
+            # else:
+            #     print('score = ', obj.score)
+            [x1, y1, x2, y2] = obj.bounding_box.flatten().tolist()
+            # print(x1, y1, x2, y2)
+            # calculate pixel coords
+            pix_x = (x1 + x2) * 320  # 640/2 = 320
+            pix_y = (y1 + y2) * 240  # 480/2 = 240
+            # calculate angles with respect to center
+            # TODO: an accurate parameter replacing 480 needs to be calculated
+            yaw = math.atan((pix_x - 640./2) / 480) * \
+                1800 / math.pi + YAW_MID
+            pitch = math.atan((pix_y - 480./2) / 480) * \
+                1800 / math.pi + PITCH_MID
+            sendMessage(dev, yaw, pitch)
+        else:
+            print('No object detected!')
 
         text_lines = [
             'Inference: %.2f ms' % ((end_time - start_time) * 1000),
@@ -132,7 +188,7 @@ def main(serial):
         last_time = end_time
         generate_svg(svg_canvas, objs, labels, text_lines)
 
-    result = gstreamer.run_pipeline(user_callback, serial)
+    result = gstreamer.run_pipeline(user_callback)
 
 
 if __name__ == '__main__':
