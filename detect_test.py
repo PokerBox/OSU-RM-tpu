@@ -109,7 +109,7 @@ def main(serial):
                 # else:
                 #     print('score = ', obj.score)
                 [x1, y1, x2, y2] = obj.bounding_box.flatten().tolist()
-                print(x1, y1, x2, y2)
+                # print(x1, y1, x2, y2)
                 # calculate pixel coords
                 pix_x = (x1 + x2) * 320  # 640/2 = 320
                 pix_y = (y1 + y2) * 240  # 480/2 = 240
