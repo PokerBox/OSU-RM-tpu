@@ -102,12 +102,12 @@ def main(serial):
         end_time = time.monotonic()
 
         if objs:
-            print()
+            # print()
             for obj in objs:
-                if labels:
-                    print(labels[obj.label_id], 'score = ', obj.score)
-                else:
-                    print('score = ', obj.score)
+                # if labels:
+                #     print(labels[obj.label_id], 'score = ', obj.score)
+                # else:
+                #     print('score = ', obj.score)
                 [x1, y1, x2, y2] = obj.bounding_box.flatten().tolist()
                 print(x1, y1, x2, y2)
                 # calculate pixel coords
