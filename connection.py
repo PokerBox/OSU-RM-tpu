@@ -106,17 +106,18 @@ class SerialThread(threading.Thread):
                 if self.debug:
                     print('Send: %d %d' % (self.send_yaw, self.send_pitch))
 
-            if count_can % int(self.fps/500) == 0:
-                count_can = 0
-                # _, _ = self.filter.getPredictionAbsolute(10)
-                # self.updateData(x, y)
-                # if self.debug:
-                #    print('Send FPS: %d' % (1./(time.time()-filter_time)))
-                if self.connect:
-                    self.sendMessage()
-
             if self.connect:
-                pass
+                self.sendMessage()
+
+            # if count_can % int(self.fps/500) == 0:
+            #     count_can = 0
+            #     # _, _ = self.filter.getPredictionAbsolute(10)
+            #     # self.updateData(x, y)
+            #     # if self.debug:
+            #     #    print('Send FPS: %d' % (1./(time.time()-filter_time)))
+
+            # if self.connect:
+            #     pass
 
                 # self.recvMessage()
                 # if self.debug:
