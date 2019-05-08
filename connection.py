@@ -103,7 +103,7 @@ class SerialThread(threading.Thread):
             count_plot += 1
             count_can += 1
 
-            if count_plot >= int(self.fps/3000):
+            if count_plot >= int(self.fps/30):
                 count_plot = 0
                 if self.debug:
                     print('Send: %d %d Recieve: %d %d' % (

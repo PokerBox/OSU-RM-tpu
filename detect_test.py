@@ -27,6 +27,7 @@ python3 -m edgetpuvision.detect \
 """
 import argparse
 import time
+import datetime
 import re
 import svgwrite
 import imp
@@ -37,6 +38,8 @@ import math
 
 YAW_MID = 900
 PITCH_MID = 300
+LOG_PATH = '~/OSU_RM_tpu/log/{date}'
+LOG_FILE = LOG_PATH.format(date=datetime.date.today())
 
 
 def load_labels(path):
