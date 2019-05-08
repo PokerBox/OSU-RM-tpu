@@ -121,7 +121,7 @@ def main(serial):
                     1800 / math.pi + PITCH_MID
                 serial.send_yaw = yaw
                 serial.send_pitch = pitch
-        else:
+        # else:
             # print('No object detected!')
 
         text_lines = [
