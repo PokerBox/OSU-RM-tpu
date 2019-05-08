@@ -192,9 +192,9 @@ def main():
             pix_y = (y1 + y2) * 240  # 480/2 = 240
             # calculate angles with respect to center
             # TODO: an accurate parameter replacing 480 needs to be calculated
-            yaw = math.atan((pix_x - 640./2) / 750) * \
+            yaw = math.atan((pix_x - 640./2) / 760) * \
                 1800 / math.pi + YAW_MID
-            pitch = math.atan((pix_y - 480./2) / 750) * \
+            pitch = math.atan((pix_y - 480./2) / 760) * \
                 1800 / math.pi + PITCH_MID
             sendMessage(dev, yaw, pitch)
         else:
