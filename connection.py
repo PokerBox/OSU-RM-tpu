@@ -19,6 +19,7 @@ class SerialThread(threading.Thread):
         if self.connect:
             self.dev = slcan.slcanBus(port, bitrate=1000000)
             self.dev.open()
+            print('Connection found!')
 
         self.yaw = YAW_MID
         self.pitch = PITCH_MID
