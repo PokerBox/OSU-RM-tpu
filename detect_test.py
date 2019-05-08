@@ -131,7 +131,7 @@ def main(serial):
         ]
         # print(' '.join(text_lines))
         last_time = end_time
-        generate_svg(svg_canvas, objs, labels, text_lines)
+        # generate_svg(svg_canvas, objs, labels, text_lines)
 
     result = gstreamer.run_pipeline(user_callback, serial)
 
