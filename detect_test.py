@@ -119,6 +119,7 @@ def main(serial):
                     1800 / math.pi + YAW_MID
                 pitch = math.atan((pix_y - 480./2) / 480) * \
                     1800 / math.pi + PITCH_MID
+
                 serial.yaw = yaw
                 serial.pitch = pitch
         # else:

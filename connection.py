@@ -106,7 +106,7 @@ class SerialThread(threading.Thread):
                 if self.debug:
                     print('Send: %d %d' % (self.send_yaw, self.send_pitch))
 
-            if count_can % int(self.fps/10000) == 0:
+            if count_can % int(self.fps/500) == 0:
                 count_can = 0
                 # _, _ = self.filter.getPredictionAbsolute(10)
                 # self.updateData(x, y)
