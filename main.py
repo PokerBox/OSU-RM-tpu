@@ -42,7 +42,7 @@ YAW_MID = 900
 PITCH_MID = 300
 X_PIXEL = 640
 Y_PIXEL = 480
-PORT = ["/dev/ttyACM0", "/dev/ttyACM1"]
+PORT = ["/dev/ttyACM1", "/dev/ttyACM0"]
 DEBUG = True
 LOG_PATH = '~/OSU_RM_tpu/log/{date}'
 
