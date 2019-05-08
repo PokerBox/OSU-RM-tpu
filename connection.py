@@ -118,7 +118,6 @@ class SerialThread(threading.Thread):
             if self.connect:
                 pass
 
-
                 # self.recvMessage()
                 # if self.debug:
                 #     print('Recieve FPS: %d' % (1./(time.time()-filter_time)))
