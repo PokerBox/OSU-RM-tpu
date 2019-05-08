@@ -114,7 +114,8 @@ def sendMessage(dev, yaw, pitch):
                          data=send_data, extended_id=False))
         print('Send: ', send_yaw, send_pitch)
 
-# Return a distance parameter (not actual distance) to be compared
+
+""" Return a distance parameter (not actual distance) to be compared """
 
 
 def distance_to_center(obj):
@@ -124,9 +125,12 @@ def distance_to_center(obj):
     return distance
 
 
+""" Choose the object closest to the center """
+
+
 def choose_obj(objs, start_time):
     chosen_obj = objs[0]
-    if objs.len > 1:
+    if len(objs) > 1:
         for obj in objs:
             if distance_to_center(obj) < distance_to_center(choose_obj):
                 chosen_obj = obj
