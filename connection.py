@@ -104,8 +104,7 @@ class SerialThread(threading.Thread):
             if count_plot >= int(self.fps/300):
                 count_plot = 0
                 if self.debug:
-                    print('Send: %d %d Recieve: %d %d' % (
-                        self.send_yaw, self.send_pitch, self.get_yaw, self.get_pitch))
+                    print('Send: %d %d' % (self.send_yaw, self.send_pitch))
 
             if count_can % int(self.fps/10000) == 0:
                 count_can = 0
