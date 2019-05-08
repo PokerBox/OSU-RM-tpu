@@ -40,6 +40,8 @@ from can import Message
 
 YAW_MID = 900
 PITCH_MID = 300
+X_PIXEL = 640
+Y_PIXEL = 480
 PORT = ["/dev/ttyACM0", "/dev/ttyACM1"]
 DEBUG = True
 LOG_PATH = '~/OSU_RM_tpu/log/{date}'
@@ -112,9 +114,23 @@ def sendMessage(dev, yaw, pitch):
                          data=send_data, extended_id=False))
         print('Send: ', send_yaw, send_pitch)
 
+# Return a distance parameter (not actual distance) to be compared
+
+
+def distance_to_center(obj):
+    [x1, y1, x2, y2] = obj.bounding_box.flatten().tolist()
+    # squre of ((distance of x coord to center) * (xy pixel ratio)) + squre of (distance of x coord to center)
+    distance = (((x1+x2)/2-0.5)*(X_PIXEL/Y_PIXEL))**2+((y1+y2)/2-0.5)**2
+    return distance
+
 
 def choose_obj(objs, start_time):
-    return objs[0]
+    chosen_obj = objs[0]
+    if objs.len > 1:
+        for obj in objs:
+            if distance_to_center(obj) < distance_to_center(choose_obj):
+                chosen_obj = obj
+    return chosen_obj
 
 
 def main():
