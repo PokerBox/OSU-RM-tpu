@@ -147,7 +147,7 @@ def main():
     # default_model = 'mobilenet_ssd_v2_face_quant_postprocess_edgetpu.tflite'
     default_model = '2019_05_10/output_tflite_graph_1557521764_edgetpu.tflite'
     # default_labels = 'face_labels.txt'
-    default_labels = 'face_labels.txt'
+    default_labels = 'armor_plate_labels.txt'
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', help='.tflite model path',
                         default=os.path.join(default_model_dir, default_model))
