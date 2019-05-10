@@ -45,7 +45,7 @@ Y_PIXEL = 240
 
 # LOGITECH: 765
 # BLACK GLOBLE SHUTTER: 416
-CAMREA_PARAM = 400
+CAMREA_PARAM = 320
 
 # Choose among 0(red), 1(blue), or 'None'
 ENEMY_COLOR = None
@@ -203,12 +203,10 @@ def main():
             # else:
             #     print('score = ', obj.score)
             [x1, y1, x2, y2] = obj.bounding_box.flatten().tolist()
-            # print(x1, y1, x2, y2)
             # calculate pixel coords
             pix_x = (x1 + x2) * X_PIXEL/2  # 640/2 = 320
             pix_y = (y1 + y2) * Y_PIXEL/2  # 480/2 = 240
             # calculate angles with respect to center
-            # TODO: an accurate parameter replacing 480 needs to be calculated
             yaw = math.atan((pix_x - X_PIXEL/2) / CAMREA_PARAM) * \
                 1800 / math.pi + YAW_MID
             pitch = math.atan((pix_y - Y_PIXEL/2) / CAMREA_PARAM) * \
