@@ -133,16 +133,16 @@ def distance_to_center(obj):
 
 # Choose the object with the enemy color closest to the center
 def choose_obj(objs, start_time):
-    if not objs:
+    if objs == []:
         return None
     enemy_objs = []
-    if not ENEMY_COLOR:
+    if ENEMY_COLOR == None:
         enemy_objs = objs
     else:
         for obj in objs:
             if obj.label_id == ENEMY_COLOR:
                 enemy_objs.append(obj)
-    if not enemy_objs:
+    if enemy_objs == []:
         return None
     chosen_obj = enemy_objs[0]
     if len(enemy_objs) > 1:
@@ -197,7 +197,7 @@ def main():
         end_time = time.monotonic()
 
         obj = choose_obj(objs, start_time)
-        if obj:
+        if not obj == []:
             # if labels:
             #     print(labels[obj.label_id], 'score = ', obj.score)
             # else:
