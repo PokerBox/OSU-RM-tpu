@@ -47,6 +47,9 @@ Y_PIXEL = 240
 # BLACK GLOBLE SHUTTER: 416
 CAMREA_PARAM = 400
 
+# Choose among 'red', 'blue', or 'None'
+ENEMY_COLOR = 'red'
+
 PORT = ["/dev/ttyACM0", "/dev/ttyACM1"]
 DEBUG = True
 LOG_PATH = '~/OSU_RM_tpu/log/{date}'
@@ -120,9 +123,7 @@ def sendMessage(dev, yaw, pitch):
         print('Send: ', send_yaw, send_pitch)
 
 
-""" Return a distance parameter (not actual distance) to be compared """
-
-
+# Return a distance parameter (not actual distance) to be compared
 def distance_to_center(obj):
     [x1, y1, x2, y2] = obj.bounding_box.flatten().tolist()
     # squre of ((distance of x coord to center) * (xy pixel ratio)) + squre of (distance of x coord to center)
@@ -130,12 +131,21 @@ def distance_to_center(obj):
     return distance
 
 
-""" Choose the object closest to the center """
-
-
+# Choose the object with the enemy color closest to the center
 def choose_obj(objs, start_time):
-    chosen_obj = objs[0]
-    if len(objs) > 1:
+    if not objs:
+        return None
+    enemy_objs = []
+    if not ENEMY_COLOR:
+        enemy_objs = objs
+    else:
+        for obj in objs:
+            if obj.label == ENEMY_COLOR:
+                enemy_objs.append(obj)
+    if not enemy_objs:
+        return None
+    chosen_obj = enemy_objs[0]
+    if len(enemy_objs) > 1:
         for obj in objs:
             if distance_to_center(obj) < distance_to_center(chosen_obj):
                 chosen_obj = obj
@@ -186,8 +196,8 @@ def main():
                                       top_k=args.top_k)
         end_time = time.monotonic()
 
-        if objs:
-            obj = choose_obj(objs, start_time)
+        obj = choose_obj(objs, start_time)
+        if obj:
             # if labels:
             #     print(labels[obj.label_id], 'score = ', obj.score)
             # else:
