@@ -197,7 +197,7 @@ def main():
         end_time = time.monotonic()
 
         obj = choose_obj(objs, start_time)
-        if not obj == []:
+        if obj:
             # if labels:
             #     print(labels[obj.label_id], 'score = ', obj.score)
             # else:
