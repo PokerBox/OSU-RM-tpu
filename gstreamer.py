@@ -24,7 +24,7 @@ gi.require_version('GstBase', '1.0')
 
 X_PIXEL = 320
 Y_PIXEL = 240
-ROTATE_180 = False
+ROTATE_180 = True
 
 GObject.threads_init()
 Gst.init(None)
