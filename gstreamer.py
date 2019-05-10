@@ -24,6 +24,7 @@ gi.require_version('GstBase', '1.0')
 
 X_PIXEL = 320
 Y_PIXEL = 240
+ROTATE_180 = True
 
 GObject.threads_init()
 Gst.init(None)
@@ -50,6 +51,8 @@ def on_new_sample(sink, overlay, screen_size, appsink_size, user_function):
     if result:
         img = Image.frombytes(
             'RGB', (appsink_size[0], appsink_size[1]), mapinfo.data, 'raw')
+        if ROTATE_180:
+            img = img.rotate(180)
         svg_canvas = svgwrite.Drawing(
             '', size=(screen_size[0], screen_size[1]))
         user_function(img, svg_canvas)
