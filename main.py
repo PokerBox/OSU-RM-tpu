@@ -47,8 +47,8 @@ Y_PIXEL = 240
 # BLACK GLOBLE SHUTTER: 416
 CAMREA_PARAM = 400
 
-# Choose among 'red', 'blue', or 'None'
-ENEMY_COLOR = 'red'
+# Choose among 0(red), 1(blue), or 'None'
+ENEMY_COLOR = 0
 
 PORT = ["/dev/ttyACM0", "/dev/ttyACM1"]
 DEBUG = True
@@ -140,7 +140,7 @@ def choose_obj(objs, start_time):
         enemy_objs = objs
     else:
         for obj in objs:
-            if obj.label == ENEMY_COLOR:
+            if obj.label_id == ENEMY_COLOR:
                 enemy_objs.append(obj)
     if not enemy_objs:
         return None
