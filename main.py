@@ -40,8 +40,13 @@ from can import Message
 
 YAW_MID = 900
 PITCH_MID = 300
-X_PIXEL = 640
-Y_PIXEL = 480
+X_PIXEL = 320
+Y_PIXEL = 240
+
+# LOGITECH: 765
+# BLACK GLOBLE SHUTTER: 416
+CAMREA_PARAM = 765
+
 PORT = ["/dev/ttyACM0", "/dev/ttyACM1"]
 DEBUG = True
 LOG_PATH = '~/OSU_RM_tpu/log/{date}'
@@ -188,13 +193,13 @@ def main():
             [x1, y1, x2, y2] = obj.bounding_box.flatten().tolist()
             # print(x1, y1, x2, y2)
             # calculate pixel coords
-            pix_x = (x1 + x2) * 320  # 640/2 = 320
-            pix_y = (y1 + y2) * 240  # 480/2 = 240
+            pix_x = (x1 + x2) * X_PIXEL/2  # 640/2 = 320
+            pix_y = (y1 + y2) * Y_PIXEL/2  # 480/2 = 240
             # calculate angles with respect to center
             # TODO: an accurate parameter replacing 480 needs to be calculated
-            yaw = math.atan((pix_x - 640./2) / 765) * \
+            yaw = math.atan((pix_x - X_PIXEL/2) / CAMREA_PARAM) * \
                 1800 / math.pi + YAW_MID
-            pitch = math.atan((pix_y - 480./2) / 765) * \
+            pitch = math.atan((pix_y - Y_PIXEL/2) / CAMREA_PARAM) * \
                 1800 / math.pi + PITCH_MID
             sendMessage(dev, yaw, pitch)
         else:

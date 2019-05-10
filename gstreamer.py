@@ -22,6 +22,9 @@ import gi
 gi.require_version('Gst', '1.0')
 gi.require_version('GstBase', '1.0')
 
+X_PIXEL = 320
+Y_PIXEL = 240
+
 GObject.threads_init()
 Gst.init(None)
 
@@ -66,7 +69,7 @@ def detectCoralDevBoard():
 
 
 def run_pipeline(user_function,
-                 src_size=(640, 480),
+                 src_size=(X_PIXEL, Y_PIXEL),
                  appsink_size=(320, 180)):
     PIPELINE = 'v4l2src device=/dev/video1 ! {src_caps} ! {leaky_q} '
     if detectCoralDevBoard():
