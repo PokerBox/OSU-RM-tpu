@@ -48,7 +48,7 @@ Y_PIXEL = 240
 CAMREA_PARAM = 400
 
 # Choose among 0(red), 1(blue), or 'None'
-ENEMY_COLOR = 0
+ENEMY_COLOR = 1
 
 PORT = ["/dev/ttyACM0", "/dev/ttyACM1"]
 DEBUG = True
