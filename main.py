@@ -45,7 +45,7 @@ Y_PIXEL = 240
 
 # LOGITECH: 765
 # BLACK GLOBLE SHUTTER: 416
-CAMREA_PARAM = 220
+CAMREA_PARAM = 250
 
 # Choose among 0(red), 1(blue), or 'None'
 ENEMY_COLOR = None
