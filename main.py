@@ -42,6 +42,7 @@ YAW_MID = 900
 PITCH_MID = 300
 X_PIXEL = 320
 Y_PIXEL = 240
+# Yaw and pitch send when no object detected
 DEFAULT_YAW = 0
 DEFAULT_PITCH = 0
 
