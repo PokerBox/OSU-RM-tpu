@@ -42,6 +42,8 @@ YAW_MID = 900
 PITCH_MID = 300
 X_PIXEL = 320
 Y_PIXEL = 240
+DEFAULT_YAW = 0
+DEFAULT_PITCH = 0
 
 # LOGITECH: 765
 # BLACK GLOBLE SHUTTER: 416
@@ -214,6 +216,7 @@ def main():
             sendMessage(dev, yaw, pitch)
         else:
             print('No object detected!')
+            sendMessage(dev, DEFAULT_YAW, DEFAULT_PITCH)
 
         text_lines = [
             'Inference: %.2f ms' % ((end_time - start_time) * 1000),
