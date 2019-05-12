@@ -85,14 +85,15 @@ def run_pipeline(user_function,
         t. ! {leaky_q} ! glfilterbin filter=glcolorscale
             ! videoconvert n-threads=3 ! {sink_caps} ! {sink_element}
     """
+
     SINK_ELEMENT = 'appsink name=appsink sync=false emit-signals=true max-buffers=1 drop=false'
     SINK_CAPS = 'video/x-raw,format=RGB,width={width},height={height}'
+    LEAKY_Q = 'queue max-size-buffers=1 leaky=downstream'
 
     src_caps = SRC_CAPS.format(width=src_size[0], height=src_size[1])
-    dl_caps = DL_CAPS.format(width=appsink_size[0], height=appsink_size[1])
     sink_caps = SINK_CAPS.format(width=appsink_size[0], height=appsink_size[1])
     pipeline = PIPELINE.format(leaky_q=LEAKY_Q,
-                               src_caps=src_caps, dl_caps=dl_caps, sink_caps=sink_caps,
+                               src_caps=src_caps, sink_caps=sink_caps,
                                sink_element=SINK_ELEMENT)
 
     print('Gstreamer pipeline: ', pipeline)
