@@ -17,6 +17,7 @@ from gi.repository import GLib, GObject, Gst, GstBase
 import sys
 from functools import partial
 import svgwrite
+import time
 
 import gi
 gi.require_version('Gst', '1.0')
@@ -45,9 +46,12 @@ def on_bus_message(bus, message, loop):
 
 
 def on_new_sample(sink, overlay, screen_size, appsink_size, user_function):
+    start = time.monotonic()
     sample = sink.emit('pull-sample')
     buf = sample.get_buffer()
     result, mapinfo = buf.map(Gst.MapFlags.READ)
+    end = time.monotonic()
+    print('fetch time', (end-start)*1000, 'ms')
     if result:
         img = Image.frombytes(
             'RGB', (appsink_size[0], appsink_size[1]), mapinfo.data, 'raw')
