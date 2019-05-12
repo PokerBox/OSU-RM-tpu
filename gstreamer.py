@@ -52,15 +52,15 @@ def on_new_sample(sink, overlay, screen_size, appsink_size, user_function):
     if result:
         img = Image.frombytes(
             'RGB', (appsink_size[0], appsink_size[1]), mapinfo.data, 'raw')
-        start = time.monotonic()
         if ROTATE_180:
             img = img.rotate(180)
-        end = time.monotonic()
-        print('decode time', (end-start)*1000, 'ms')
         svg_canvas = svgwrite.Drawing(
             '', size=(screen_size[0], screen_size[1]))
         user_function(img, svg_canvas)
+        start = time.monotonic()
         overlay.set_property('data', svg_canvas.tostring())
+        end = time.monotonic()
+        print('decode time', (end-start)*1000, 'ms')
     buf.unmap(mapinfo)
     return Gst.FlowReturn.OK
 
