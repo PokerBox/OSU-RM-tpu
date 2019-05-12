@@ -157,7 +157,6 @@ def choose_obj(objs, start_time):
 
 
 def main():
-    time.sleep(10)
     default_model_dir = 'models'
     # default_model = '2019_05_10/output_tflite_graph_1557618824_edgetpu.tflite'
     # default_labels = 'armor_plate_labels.txt'
@@ -181,14 +180,14 @@ def main():
 
     last_time = time.monotonic()
 
-    # try:
-    #     dev = slcan.slcanBus(PORT[0], bitrate=1000000)
-    #     dev.open()
-    #     print('Connection found at port ', PORT[0])
-    # except:
-    #     dev = slcan.slcanBus(PORT[1], bitrate=1000000)
-    #     dev.open()
-    #     print('Connection found at port ', PORT[1])
+    try:
+        dev = slcan.slcanBus(PORT[0], bitrate=1000000)
+        dev.open()
+        print('Connection found at port ', PORT[0])
+    except:
+        dev = slcan.slcanBus(PORT[1], bitrate=1000000)
+        dev.open()
+        print('Connection found at port ', PORT[1])
 
     yaw = YAW_MID
     pitch = PITCH_MID
@@ -216,10 +215,10 @@ def main():
                 1800 / math.pi + YAW_MID
             pitch = math.atan((pix_y - Y_PIXEL/2) / CAMERA_PARAM) * \
                 1800 / math.pi + PITCH_MID
-            # sendMessage(dev, yaw, pitch)
+            sendMessage(dev, yaw, pitch)
         else:
             print('No object detected!')
-            # sendMessage(dev, DEFAULT_YAW, DEFAULT_PITCH)
+            sendMessage(dev, DEFAULT_YAW, DEFAULT_PITCH)
 
         text_lines = [
             'Inference: %.2f ms' % ((end_time - start_time) * 1000),
