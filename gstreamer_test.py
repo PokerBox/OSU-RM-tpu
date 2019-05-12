@@ -78,12 +78,12 @@ def detectCoralDevBoard():
 
 def run_pipeline(user_function,
                  src_size=(X_PIXEL, Y_PIXEL),
-                 appsink_size=(320, 240)):
+                 appsink_size=(320, 180)):
     PIPELINE = 'v4l2src device=/dev/video1 ! {src_caps} ! {leaky_q} '
     SRC_CAPS = 'video/x-raw,format=YUY2,width={width},height={height},framerate=60/1'
     PIPELINE += """ ! glupload ! tee name=t
-        t. ! {leaky_q} ! glfilterbin filter=glcolorscale
-            ! videoconvert n-threads=3 ! {sink_caps} ! {sink_element}
+        t. ! {leaky_q} 
+            ! videoconvert n-threads=2 ! {sink_caps} ! {sink_element}
     """
 
     SINK_ELEMENT = 'appsink name=appsink sync=false emit-signals=true max-buffers=1 drop=true'
