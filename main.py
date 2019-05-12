@@ -40,8 +40,8 @@ from can import Message
 
 YAW_MID = 900
 PITCH_MID = 300
-X_PIXEL = 1280
-Y_PIXEL = 720
+X_PIXEL = 640
+Y_PIXEL = 480
 # Yaw and pitch send when no object detected
 DEFAULT_YAW = 9999
 DEFAULT_PITCH = 9999
