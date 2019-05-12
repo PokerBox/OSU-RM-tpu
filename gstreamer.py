@@ -22,8 +22,8 @@ import gi
 gi.require_version('Gst', '1.0')
 gi.require_version('GstBase', '1.0')
 
-X_PIXEL = 640
-Y_PIXEL = 480
+X_PIXEL = 1280
+Y_PIXEL = 720
 ROTATE_180 = True
 
 GObject.threads_init()
@@ -95,7 +95,7 @@ def run_pipeline(user_function,
     # DL_CAPS = 'video/x-raw,format=RGBA,width={width},height={height}'
     # SINK_CAPS = 'video/x-raw,format=RGB,width={width},height={height}'
     # LEAKY_Q = 'queue max-size-buffers=1 leaky=downstream'
-    SINK_ELEMENT = 'appsink name=appsink sync=true emit-signals=true max-buffers=1 drop=true'
+    SINK_ELEMENT = 'appsink name=appsink sync=false emit-signals=false max-buffers=1 drop=true'
     DL_CAPS = 'video/x-raw,format=RGBA,width={width},height={height}'
     SINK_CAPS = 'video/x-raw,format=RGB,width={width},height={height}'
     LEAKY_Q = 'queue max-size-buffers=1 leaky=downstream'
