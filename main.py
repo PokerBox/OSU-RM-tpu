@@ -157,6 +157,7 @@ def choose_obj(objs, start_time):
 
 
 def main():
+    time.sleep(10)
     default_model_dir = 'models'
     # default_model = '2019_05_10/output_tflite_graph_1557618824_edgetpu.tflite'
     # default_labels = 'armor_plate_labels.txt'
