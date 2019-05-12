@@ -46,13 +46,15 @@ def on_bus_message(bus, message, loop):
 
 
 def on_new_sample(sink, overlay, screen_size, appsink_size, user_function):
-    start = time.monotonic()
     sample = sink.emit('pull-sample')
     buf = sample.get_buffer()
     result, mapinfo = buf.map(Gst.MapFlags.READ)
     if result:
+        start = time.monotonic()
         img = Image.frombytes(
             'RGB', (appsink_size[0], appsink_size[1]), mapinfo.data, 'raw')
+        end = time.monotonic()
+        print('decode time', (end-start)*1000, 'ms')
         if ROTATE_180:
             img = img.rotate(180)
         svg_canvas = svgwrite.Drawing(
@@ -60,8 +62,6 @@ def on_new_sample(sink, overlay, screen_size, appsink_size, user_function):
         user_function(img, svg_canvas)
         overlay.set_property('data', svg_canvas.tostring())
     buf.unmap(mapinfo)
-    end = time.monotonic()
-    print('on new sample time', (end-start)*1000, 'ms')
     return Gst.FlowReturn.OK
 
 
