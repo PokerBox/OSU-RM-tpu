@@ -40,8 +40,8 @@ from can import Message
 
 YAW_MID = 900
 PITCH_MID = 300
-X_PIXEL = 640
-Y_PIXEL = 480
+X_PIXEL = 320
+Y_PIXEL = 240
 # Yaw and pitch send when no object detected
 DEFAULT_YAW = 9999
 DEFAULT_PITCH = 9999
@@ -49,7 +49,7 @@ DEFAULT_PITCH = 9999
 # LOGITECH: 765
 # BLACK GLOBLE SHUTTER: 416
 # BLUE CAMERA = 300
-CAMERA_PARAM = 400
+CAMERA_PARAM = 300
 
 # Choose among 0(red), 1(blue), or 'None'
 ENEMY_COLOR = None
@@ -159,10 +159,10 @@ def choose_obj(objs, start_time):
 def main():
     time.sleep(10)
     default_model_dir = 'models'
-    # default_model = '2019_05_10/output_tflite_graph_1557618824_edgetpu.tflite'
-    # default_labels = 'armor_plate_labels.txt'
-    default_model = 'mobilenet_ssd_v2_face_quant_postprocess_edgetpu.tflite'
-    default_labels = 'face_labels.txt'
+    default_model = '2019_05_10/output_tflite_graph_1557618824_edgetpu.tflite'
+    default_labels = 'armor_plate_labels.txt'
+    #default_model = 'mobilenet_ssd_v2_face_quant_postprocess_edgetpu.tflite'
+    #default_labels = 'face_labels.txt'
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', help='.tflite model path',
                         default=os.path.join(default_model_dir, default_model))
