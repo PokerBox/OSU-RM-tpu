@@ -40,15 +40,16 @@ from can import Message
 
 YAW_MID = 900
 PITCH_MID = 300
-X_PIXEL = 320
-Y_PIXEL = 240
+X_PIXEL = 640
+Y_PIXEL = 480
 # Yaw and pitch send when no object detected
 DEFAULT_YAW = 9999
 DEFAULT_PITCH = 9999
 
 # LOGITECH: 765
 # BLACK GLOBLE SHUTTER: 416
-CAMREA_PARAM = 300
+# BLUE CAMERA = 300
+CAMERA_PARAM = 400
 
 # Choose among 0(red), 1(blue), or 'None'
 ENEMY_COLOR = None
@@ -210,9 +211,9 @@ def main():
             pix_x = (x1 + x2) * X_PIXEL/2  # 640/2 = 320
             pix_y = (y1 + y2) * Y_PIXEL/2  # 480/2 = 240
             # calculate angles with respect to center
-            yaw = math.atan((pix_x - X_PIXEL/2) / CAMREA_PARAM) * \
+            yaw = math.atan((pix_x - X_PIXEL/2) / CAMERA_PARAM) * \
                 1800 / math.pi + YAW_MID
-            pitch = math.atan((pix_y - Y_PIXEL/2) / CAMREA_PARAM) * \
+            pitch = math.atan((pix_y - Y_PIXEL/2) / CAMERA_PARAM) * \
                 1800 / math.pi + PITCH_MID
             sendMessage(dev, yaw, pitch)
         else:
