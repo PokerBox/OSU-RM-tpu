@@ -95,7 +95,7 @@ def run_pipeline(user_function,
     # DL_CAPS = 'video/x-raw,format=RGBA,width={width},height={height}'
     # SINK_CAPS = 'video/x-raw,format=RGB,width={width},height={height}'
     # LEAKY_Q = 'queue max-size-buffers=1 leaky=downstream'
-    SINK_ELEMENT = 'appsink name=appsink sync=false emit-signals=true max-buffers=1 drop=true'
+    SINK_ELEMENT = 'appsink name=appsink sync=true emit-signals=true max-buffers=1 drop=true'
     DL_CAPS = 'video/x-raw,format=RGBA,width={width},height={height}'
     SINK_CAPS = 'video/x-raw,format=RGB,width={width},height={height}'
     LEAKY_Q = 'queue max-size-buffers=1 leaky=downstream'
