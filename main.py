@@ -33,7 +33,7 @@ import svgwrite
 import imp
 import os
 from edgetpu.detection.engine import DetectionEngine
-import gstreamer
+import gstreamer_test
 import math
 from can.interfaces import slcan
 from can import Message

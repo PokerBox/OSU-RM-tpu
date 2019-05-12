@@ -45,7 +45,7 @@ def on_bus_message(bus, message, loop):
     return True
 
 
-def on_new_sample(sink, overlay, screen_size, appsink_size, user_function):
+def on_new_sample(sink, screen_size, appsink_size, user_function):
     start = time.monotonic()
     sample = sink.emit('pull-sample')
     buf = sample.get_buffer()
@@ -78,23 +78,13 @@ def detectCoralDevBoard():
 
 def run_pipeline(user_function,
                  src_size=(X_PIXEL, Y_PIXEL),
-                 appsink_size=(320, 180)):
+                 appsink_size=(320, 240)):
     PIPELINE = 'v4l2src device=/dev/video1 ! {src_caps} ! {leaky_q} '
-    if detectCoralDevBoard():
-        SRC_CAPS = 'video/x-raw,format=YUY2,width={width},height={height},framerate=60/1'
-        PIPELINE += """ ! glupload ! tee name=t
-            t. ! {leaky_q} ! glfilterbin filter=glcolorscale
-               ! {dl_caps} ! videoconvert ! {sink_caps} ! {sink_element}
-            t. ! {leaky_q} ! glfilterbin filter=glcolorscale
-               ! rsvgoverlay name=overlay ! waylandsink
-        """
-    else:
-        SRC_CAPS = 'video/x-raw,width={width},height={height},framerate=60/1'
-        PIPELINE += """ ! tee name=t
-            t. ! {leaky_q} ! videoconvert ! videoscale ! {sink_caps} ! {sink_element}
-            t. ! {leaky_q} ! videoconvert
-               ! rsvgoverlay name=overlay ! videoconvert ! ximagesink
-            """
+    SRC_CAPS = 'video/x-raw,format=YUY2,width={width},height={height},framerate=60/1'
+    PIPELINE += """ ! glupload ! tee name=t
+        t. ! {leaky_q} ! glfilterbin filter=glcolorscale
+            ! {dl_caps} ! videoconvert ! {sink_caps} ! {sink_element}
+    """
 
     SINK_ELEMENT = 'appsink name=appsink sync=false emit-signals=true max-buffers=1 drop=true'
     DL_CAPS = 'video/x-raw,format=RGBA,width={width},height={height}'
@@ -111,10 +101,9 @@ def run_pipeline(user_function,
     print('Gstreamer pipeline: ', pipeline)
     pipeline = Gst.parse_launch(pipeline)
 
-    overlay = pipeline.get_by_name('overlay')
     appsink = pipeline.get_by_name('appsink')
     appsink.connect('new-sample', partial(on_new_sample,
-                                          overlay=overlay, screen_size=src_size,
+                                          screen_size=src_size,
                                           appsink_size=appsink_size, user_function=user_function))
     loop = GObject.MainLoop()
 
