@@ -76,7 +76,7 @@ def run_pipeline(user_function,
                  appsink_size=(320, 180)):
     PIPELINE = 'v4l2src device=/dev/video1 ! {src_caps} ! {leaky_q} '
     if detectCoralDevBoard():
-        SRC_CAPS = 'video/x-raw,format=YUY2,width={width},height={height},framerate=30/1'
+        SRC_CAPS = 'video/x-raw,format=YUY2,width={width},height={height},framerate=60/1'
         PIPELINE += """ ! glupload ! tee name=t
             t. ! {leaky_q} ! glfilterbin filter=glcolorscale
                ! {dl_caps} ! videoconvert ! {sink_caps} ! {sink_element}
@@ -84,7 +84,7 @@ def run_pipeline(user_function,
                ! rsvgoverlay name=overlay ! waylandsink
         """
     else:
-        SRC_CAPS = 'video/x-raw,width={width},height={height},framerate=30/1'
+        SRC_CAPS = 'video/x-raw,width={width},height={height},framerate=60/1'
         PIPELINE += """ ! tee name=t
             t. ! {leaky_q} ! videoconvert ! videoscale ! {sink_caps} ! {sink_element}
             t. ! {leaky_q} ! videoconvert
