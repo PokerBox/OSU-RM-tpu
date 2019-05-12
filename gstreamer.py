@@ -73,7 +73,7 @@ def detectCoralDevBoard():
 
 def run_pipeline(user_function,
                  src_size=(X_PIXEL, Y_PIXEL),
-                 appsink_size=(640, 480)):
+                 appsink_size=(320, 180)):
     PIPELINE = 'v4l2src device=/dev/video1 ! {src_caps} ! {leaky_q} '
     if detectCoralDevBoard():
         SRC_CAPS = 'video/x-raw,format=YUY2,width={width},height={height},framerate=60/1'
@@ -98,11 +98,12 @@ def run_pipeline(user_function,
     SINK_ELEMENT = 'appsink name=appsink sync=false emit-signals=true max-buffers=1 drop=true'
     DL_CAPS = 'video/x-raw,format=RGBA,width={width},height={height}'
     SINK_CAPS = 'video/x-raw,format=RGB,width={width},height={height}'
-    LEAKY_Q = 'queue max-size-buffers=1 leaky=downstream flush-on-eos=true'
+    LEAKY_Q = 'queue max-size-buffers=1 leaky=downstream'
 
     src_caps = SRC_CAPS.format(width=src_size[0], height=src_size[1])
     dl_caps = DL_CAPS.format(width=appsink_size[0], height=appsink_size[1])
-    sink_caps = SINK_CAPS.format(width=appsink_size[0], height=appsink_size[1])
+    # sink_caps = SINK_CAPS.format(width=appsink_size[0], height=appsink_size[1])
+    sink_caps = SINK_CAPS.format(width=80, height=60)
     pipeline = PIPELINE.format(leaky_q=LEAKY_Q,
                                src_caps=src_caps, dl_caps=dl_caps, sink_caps=sink_caps,
                                sink_element=SINK_ELEMENT)
