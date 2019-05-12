@@ -192,7 +192,7 @@ def main():
     yaw = YAW_MID
     pitch = PITCH_MID
 
-    def user_callback(image, svg_canvas):
+    def user_callback(image):
         nonlocal last_time
         start_time = time.monotonic()
         objs = engine.DetectWithImage(image, threshold=args.threshold,

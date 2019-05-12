@@ -25,7 +25,7 @@ gi.require_version('GstBase', '1.0')
 
 X_PIXEL = 640
 Y_PIXEL = 480
-ROTATE_180 = True
+ROTATE_180 = False
 
 GObject.threads_init()
 Gst.init(None)
@@ -55,11 +55,11 @@ def on_new_sample(sink, screen_size, appsink_size, user_function):
             'RGB', (appsink_size[0], appsink_size[1]), mapinfo.data, 'raw')
         if ROTATE_180:
             img = img.rotate(180)
-        svg_canvas = svgwrite.Drawing(
-            '', size=(screen_size[0], screen_size[1]))
+        # svg_canvas = svgwrite.Drawing(
+        #     '', size=(screen_size[0], screen_size[1]))
 
         # overlay.set_property('data', svg_canvas.tostring())
-        user_function(img, svg_canvas)
+        user_function(img)
     buf.unmap(mapinfo)
     end = time.monotonic()
     print('decode time', (end-start)*1000, 'ms')
