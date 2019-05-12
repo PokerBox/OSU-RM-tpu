@@ -86,7 +86,7 @@ def run_pipeline(user_function,
             ! videoconvert n-threads=3 ! {sink_caps} ! {sink_element}
     """
 
-    SINK_ELEMENT = 'appsink name=appsink sync=false emit-signals=true max-buffers=1 drop=false'
+    SINK_ELEMENT = 'appsink name=appsink sync=false emit-signals=true max-buffers=1 drop=true'
     SINK_CAPS = 'video/x-raw,format=RGB,width={width},height={height}'
     LEAKY_Q = 'queue max-size-buffers=1 leaky=downstream'
 
