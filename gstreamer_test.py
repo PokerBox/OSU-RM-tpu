@@ -46,7 +46,6 @@ def on_bus_message(bus, message, loop):
 
 
 def on_new_sample(sink, screen_size, appsink_size, user_function):
-    start = time.monotonic()
     sample = sink.emit('pull-sample')
     buf = sample.get_buffer()
     result, mapinfo = buf.map(Gst.MapFlags.READ)
@@ -61,8 +60,6 @@ def on_new_sample(sink, screen_size, appsink_size, user_function):
         # overlay.set_property('data', svg_canvas.tostring())
         user_function(img)
     buf.unmap(mapinfo)
-    end = time.monotonic()
-    print('decode time', (end-start)*1000, 'ms')
     return Gst.FlowReturn.OK
 
 

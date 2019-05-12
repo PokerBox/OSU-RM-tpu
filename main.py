@@ -222,6 +222,7 @@ def main():
 
         text_lines = [
             'Inference: %.2f ms' % ((end_time - start_time) * 1000),
+            'SPF: %.2f ms' % ((end_time - last_time)*1000),
             'FPS: %.2f fps' % (1.0/(end_time - last_time)),
         ]
         print(' '.join(text_lines))
