@@ -50,8 +50,6 @@ def on_new_sample(sink, overlay, screen_size, appsink_size, user_function):
     sample = sink.emit('pull-sample')
     buf = sample.get_buffer()
     result, mapinfo = buf.map(Gst.MapFlags.READ)
-    end = time.monotonic()
-    print('fetch time', (end-start)*1000, 'ms')
     if result:
         img = Image.frombytes(
             'RGB', (appsink_size[0], appsink_size[1]), mapinfo.data, 'raw')
@@ -62,6 +60,8 @@ def on_new_sample(sink, overlay, screen_size, appsink_size, user_function):
         user_function(img, svg_canvas)
         overlay.set_property('data', svg_canvas.tostring())
     buf.unmap(mapinfo)
+    end = time.monotonic()
+    print('on new sample time', (end-start)*1000, 'ms')
     return Gst.FlowReturn.OK
 
 
