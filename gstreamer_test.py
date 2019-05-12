@@ -52,6 +52,7 @@ def on_new_sample(sink, screen_size, appsink_size, user_function):
     if result:
         img = Image.frombytes(
             'RGB', (appsink_size[0], appsink_size[1]), mapinfo.data, 'raw')
+        print(img.size)
         if ROTATE_180:
             img = img.rotate(180)
         # svg_canvas = svgwrite.Drawing(
