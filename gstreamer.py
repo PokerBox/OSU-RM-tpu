@@ -91,10 +91,6 @@ def run_pipeline(user_function,
                ! rsvgoverlay name=overlay ! videoconvert ! ximagesink
             """
 
-    # SINK_ELEMENT = 'appsink name=appsink sync=false emit-signals=true max-buffers=1 drop=true'
-    # DL_CAPS = 'video/x-raw,format=RGBA,width={width},height={height}'
-    # SINK_CAPS = 'video/x-raw,format=RGB,width={width},height={height}'
-    # LEAKY_Q = 'queue max-size-buffers=1 leaky=downstream'
     SINK_ELEMENT = 'appsink name=appsink sync=false emit-signals=true max-buffers=1 drop=true'
     DL_CAPS = 'video/x-raw,format=RGBA,width={width},height={height}'
     SINK_CAPS = 'video/x-raw,format=RGB,width={width},height={height}'
@@ -123,7 +119,7 @@ def run_pipeline(user_function,
     bus.connect('message', on_bus_message, loop)
 
     # Run pipeline.
-    pipeline.set_state(Gst.State.PLAYING)
+    pipeline.set_state(Gst.State.NULL)
     try:
         loop.run()
     except:
