@@ -33,7 +33,7 @@ import svgwrite
 import imp
 import os
 from edgetpu.detection.engine import DetectionEngine
-import gstreamer_test as gstreamer
+import gstreamer as gstreamer
 import math
 from can.interfaces import slcan
 from can import Message
@@ -192,7 +192,7 @@ def main():
     yaw = YAW_MID
     pitch = PITCH_MID
 
-    def user_callback(image):
+    def user_callback(image, svg_canvas):
         nonlocal last_time
         start_time = time.monotonic()
         objs = engine.DetectWithImage(image, threshold=args.threshold,
