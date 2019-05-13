@@ -24,7 +24,7 @@ gi.require_version('GstBase', '1.0')
 
 X_PIXEL = 640
 Y_PIXEL = 480
-ROTATE_180 = True
+ROTATE_180 = False
 
 GObject.threads_init()
 Gst.init(None)
@@ -73,7 +73,7 @@ def detectCoralDevBoard():
 
 def run_pipeline(user_function,
                  src_size=(X_PIXEL, Y_PIXEL),
-                 appsink_size=(320, 180)):
+                 appsink_size=(320, 320)):
     PIPELINE = 'v4l2src device=/dev/video1 ! {src_caps} ! {leaky_q} '
     if detectCoralDevBoard():
         SRC_CAPS = 'video/x-raw,format=YUY2,width={width},height={height},framerate=60/1'
