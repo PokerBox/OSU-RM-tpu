@@ -52,8 +52,6 @@ def on_new_sample(sink, screen_size, appsink_size, user_function):
     if result:
         img = Image.frombytes(
             'RGB', (appsink_size[0], appsink_size[1]), mapinfo.data, 'raw')
-        img.show()
-        time.sleep(5)
         if ROTATE_180:
             img = img.rotate(180)
         # svg_canvas = svgwrite.Drawing(
@@ -77,7 +75,7 @@ def detectCoralDevBoard():
 
 def run_pipeline(user_function,
                  src_size=(X_PIXEL, Y_PIXEL),
-                 appsink_size=(640, 320)):
+                 appsink_size=(640, 480)):
     PIPELINE = 'v4l2src device=/dev/video1 ! {src_caps} ! {leaky_q} '
     SRC_CAPS = 'video/x-raw,format=YUY2,width={width},height={height},framerate=60/1'
     PIPELINE += """ ! glupload ! tee name=t
