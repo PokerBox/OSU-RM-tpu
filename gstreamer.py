@@ -58,7 +58,7 @@ def on_new_sample(sink, overlay, screen_size, appsink_size, user_function):
         svg_canvas = svgwrite.Drawing(
             '', size=(screen_size[0], screen_size[1]))
 
-        # overlay.set_property('data', svg_canvas.tostring())
+        overlay.set_property('data', svg_canvas.tostring())
         user_function(img, svg_canvas)
     buf.unmap(mapinfo)
     end = time.monotonic()
