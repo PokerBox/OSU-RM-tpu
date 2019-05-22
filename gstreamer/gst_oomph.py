@@ -18,7 +18,7 @@ from functools import partial
 import sys
 from gi.repository import GLib, GObject, Gst, GstBase
 from PIL import Image
-# import gi
+import gi
 import warnings
 warnings.filterwarnings("ignore")
 
