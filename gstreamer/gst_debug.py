@@ -13,6 +13,8 @@
 # limitations under the License.
 
 from PIL import Image
+import warnings
+warnings.filterwarnings("ignore")
 from gi.repository import GLib, GObject, Gst, GstBase
 import sys
 from functools import partial
