@@ -24,6 +24,7 @@ gi.require_version('GstBase', '1.0')
 
 X_PIXEL = 640
 Y_PIXEL = 480
+FRAME_RATE = 30
 ROTATE_180 = True
 
 GObject.threads_init()
@@ -76,7 +77,7 @@ def run_pipeline(user_function,
                  appsink_size=(300, 300)):
     PIPELINE = 'v4l2src device=/dev/video1 ! {src_caps} ! {leaky_q} '
     if detectCoralDevBoard():
-        SRC_CAPS = 'video/x-raw,format=YUY2,width={width},height={height},framerate=60/1'
+        SRC_CAPS = 'video/x-raw,format=YUY2,width={width},height={height},framerate={frame_rate}/1'
         PIPELINE += """ ! glupload ! tee name=t
             t. ! {leaky_q} ! glfilterbin filter=glcolorscale
                ! {dl_caps} ! videoconvert ! {sink_caps} ! {sink_element}
@@ -84,7 +85,7 @@ def run_pipeline(user_function,
                ! rsvgoverlay name=overlay ! waylandsink
         """
     else:
-        SRC_CAPS = 'video/x-raw,width={width},height={height},framerate=60/1'
+        SRC_CAPS = 'video/x-raw,width={width},height={height},framerate={frame_rate}/1'
         PIPELINE += """ ! tee name=t
             t. ! {leaky_q} ! videoconvert ! videoscale ! {sink_caps} ! {sink_element}
             t. ! {leaky_q} ! videoconvert
@@ -96,7 +97,8 @@ def run_pipeline(user_function,
     SINK_CAPS = 'video/x-raw,format=RGB,width={width},height={height}'
     LEAKY_Q = 'queue max-size-buffers=1 leaky=downstream'
 
-    src_caps = SRC_CAPS.format(width=src_size[0], height=src_size[1])
+    src_caps = SRC_CAPS.format(
+        width=src_size[0], height=src_size[1], frame_rate=FRAME_RATE)
     dl_caps = DL_CAPS.format(width=appsink_size[0], height=appsink_size[1])
     sink_caps = SINK_CAPS.format(width=appsink_size[0], height=appsink_size[1])
     pipeline = PIPELINE.format(leaky_q=LEAKY_Q,
