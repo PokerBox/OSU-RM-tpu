@@ -16,14 +16,13 @@ import time
 import svgwrite
 from functools import partial
 import sys
-from gi.repository import GLib, GObject, Gst, GstBase
-from PIL import Image
-import gi
 import warnings
 warnings.filterwarnings("ignore")
-
+import gi
 gi.require_version('Gst', '1.0')
 gi.require_version('GstBase', '1.0')
+from gi.repository import GLib, GObject, Gst, GstBase
+from PIL import Image
 
 
 X_PIXEL = 640
