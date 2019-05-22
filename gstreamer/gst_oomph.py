@@ -12,16 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from PIL import Image
-from gi.repository import GLib, GObject, Gst, GstBase
-import sys
-from functools import partial
-import svgwrite
 import time
+import svgwrite
+from functools import partial
+import sys
+from gi.repository import GLib, GObject, Gst, GstBase
+from PIL import Image
+# import gi
+import warnings
+warnings.filterwarnings("ignore")
 
-import gi
 gi.require_version('Gst', '1.0')
 gi.require_version('GstBase', '1.0')
+
 
 X_PIXEL = 640
 Y_PIXEL = 480
