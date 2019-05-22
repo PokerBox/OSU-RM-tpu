@@ -105,7 +105,9 @@ def run_pipeline(user_function,
                                src_caps=src_caps, dl_caps=dl_caps, sink_caps=sink_caps,
                                sink_element=SINK_ELEMENT)
 
-    print('Gstreamer pipeline: ', pipeline)
+    print("Preparing streamer pipeline")
+    print("Camera resolution", src_size[0],
+          src_size[1], "Frame rate", FRAME_RATE)
     pipeline = Gst.parse_launch(pipeline)
 
     overlay = pipeline.get_by_name('overlay')

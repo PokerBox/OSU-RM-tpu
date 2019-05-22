@@ -184,11 +184,11 @@ def main():
     try:
         dev = slcan.slcanBus(PORT[0], bitrate=1000000)
         dev.open()
-        print('Connection found at port ', PORT[0])
+        print('Connection found at port', PORT[0])
     except:
         dev = slcan.slcanBus(PORT[1], bitrate=1000000)
         dev.open()
-        print('Connection found at port ', PORT[1])
+        print('Connection found at port', PORT[1])
 
     yaw = YAW_MID
     pitch = PITCH_MID
