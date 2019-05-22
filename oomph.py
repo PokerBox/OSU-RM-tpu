@@ -1,7 +1,3 @@
-# from PIL import Image
-# with Image.open('hi.png') as img:
-#     img.show()
-
 # Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,9 +47,9 @@ DEFAULT_YAW = 9999
 DEFAULT_PITCH = 9999
 
 # LOGITECH: 765
-# BLACK GLOBLE SHUTTER: 740x416x416
-# BLUE CAMERA = 320x240x300
-# BLACK YUYV CAMERA 640x480x700
+# BLACK GLOBLE SHUTTER: 740x416 416
+# BLUE CAMERA = 320x240 300
+# BLACK YUYV CAMERA 640x480 700
 CAMERA_PARAM = 700
 
 # Choose among 0(red), 1(blue), or 'None'
