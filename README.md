@@ -1,9 +1,9 @@
 # OSU-RM-tpu
-This is an auto detection project running on google coral tpu. The goal of this project is to get high performance detection for armor boards in the RoboMaster competition. The project is tested on a coral tpu and achieved 40-50 fps. The models provided in ```/models``` are not garanteed to run on any camera. Should try to create your own dataset using your camera and train a model to achieve higher accuracy.
+This is an auto detection project running on google coral tpu. It is supported by python API. The goal of this project is to get high performance detection for armor boards in the RoboMaster competition. The project is tested on a coral tpu and achieved 40-50 fps. The models provided in ```/models``` are not garanteed to run on any camera. Should try to create your own dataset using your camera and train a model to achieve higher accuracy.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development.
+These instructions will get you a copy of the project up and running on your local machine for development. For more information, check [instructions from google](https://coral.withgoogle.com/docs/dev-board/get-started/).
 
 ### Prerequisites
 
