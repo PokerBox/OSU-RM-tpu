@@ -19,6 +19,7 @@ from gi.repository import GLib, GObject, Gst, GstBase
 import sys
 from functools import partial
 import svgwrite
+import time
 
 import gi
 gi.require_version('Gst', '1.0')
@@ -58,6 +59,9 @@ def on_new_sample(sink, overlay, screen_size, appsink_size, user_function):
             img = img.rotate(180)
         svg_canvas = svgwrite.Drawing(
             '', size=(screen_size[0], screen_size[1]))
+        img.save("img1.png","PNG")
+        print('image saved, sleeping 10 seconds')
+        time.sleep(10)
         user_function(img, svg_canvas)
         overlay.set_property('data', svg_canvas.tostring())
     buf.unmap(mapinfo)
@@ -76,7 +80,7 @@ def detectCoralDevBoard():
 
 def run_pipeline(user_function,
                  src_size=(X_PIXEL, Y_PIXEL),
-                 appsink_size=(X_PIXEL, Y_PIXEL)):
+                 appsink_size=(300, 300)):
     PIPELINE = 'v4l2src device=/dev/video1 ! {src_caps} ! {leaky_q} '
     if detectCoralDevBoard():
         SRC_CAPS = 'video/x-raw,format=YUY2,width={width},height={height},framerate={frame_rate}/1'
