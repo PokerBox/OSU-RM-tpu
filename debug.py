@@ -201,7 +201,9 @@ def main():
                                       keep_aspect_ratio=True, relative_coord=True,
                                       top_k=args.top_k)
         end_time = time.monotonic()
-
+        image.save("img1.png","PNG")
+        print('image saved, sleeping 10 seconds')
+        time.sleep(10)
         obj = choose_obj(objs, start_time)
         if obj:
             # if labels:
