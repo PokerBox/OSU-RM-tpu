@@ -48,13 +48,13 @@ def on_bus_message(bus, message, loop):
     return True
 
 
-def on_new_sample(sink, screen_size, appsink_size, user_function):
+def on_new_sample(sink, appsink_size, user_function):
     sample = sink.emit('pull-sample')
     buf = sample.get_buffer()
     result, mapinfo = buf.map(Gst.MapFlags.READ)
     if result:
         img = Image.frombytes(
-            'RGB', (appsink_size[0], appsink_size[1]), mapinfo.data, 'raw')
+            'RGB', (640, 480, mapinfo.data, 'raw')
         # img.resize((300, 300), Image.NEAREST)
         if ROTATE_180:
             img = img.rotate(180)
@@ -84,12 +84,12 @@ def run_pipeline(user_function,
     """
 
     SINK_ELEMENT = 'appsink name=appsink sync=false emit-signals=true max-buffers=1 drop=true'
-    SINK_CAPS = 'video/x-raw,format=RGB,width={width},height={height}'
+    SINK_CAPS = 'video/x-raw,format=RGB'
     LEAKY_Q = 'queue max-size-buffers=1 leaky=downstream'
 
     src_caps = SRC_CAPS.format(
         width=src_size[0], height=src_size[1], frame_rate=FRAME_RATE)
-    sink_caps = SINK_CAPS.format(width=appsink_size[0], height=appsink_size[1])
+    # sink_caps = SINK_CAPS.format(width=appsink_size[0], height=appsink_size[1])
     pipeline = PIPELINE.format(leaky_q=LEAKY_Q,
                                src_caps=src_caps, sink_caps=sink_caps,
                                sink_element=SINK_ELEMENT)
@@ -99,7 +99,6 @@ def run_pipeline(user_function,
 
     appsink = pipeline.get_by_name('appsink')
     appsink.connect('new-sample', partial(on_new_sample,
-                                          screen_size=src_size,
                                           appsink_size=appsink_size, user_function=user_function))
     loop = GObject.MainLoop()
 
