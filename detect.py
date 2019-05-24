@@ -48,9 +48,6 @@ PORT = ["/dev/ttyACM0", "/dev/ttyACM1"]
 DEBUG = False
 LOG_PATH = '~/OSU_RM_tpu/log/{date}'
 
-# def debug():
-#     DEBUG = True
-
 def load_labels(path):
     p = re.compile(r'\s*(\d+)(.+)')
     with open(path, 'r', encoding='utf-8') as f:
@@ -151,9 +148,6 @@ def choose_obj(objs, start_time):
     return chosen_obj
 
 def main():
-    for arg in sys.argv[1:]:
-        if arg is "debug":
-            DEBUG = True
     default_model_dir = 'models'
     default_model = '2019_05_13_whole/output_tflite_graph_1557776948_edgetpu.tflite'
     default_labels = 'armor_plate_labels.txt'
