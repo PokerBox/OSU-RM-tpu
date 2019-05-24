@@ -20,12 +20,7 @@ import time
 import svgwrite
 from functools import partial
 import sys
-
 from PIL import Image
-# import warnings
-# warnings.filterwarnings("ignore")
-
-
 
 X_PIXEL = 640
 Y_PIXEL = 480
