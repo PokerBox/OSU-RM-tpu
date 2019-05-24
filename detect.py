@@ -112,7 +112,7 @@ def sendMessage(dev, yaw, pitch):
         dev.send(Message(arbitration_id=0x300, dlc=8,
                          data=send_data, extended_id=False))
         print('Send: ', send_yaw, send_pitch)
-    else if dev is None:
+    elif dev is None:
         print('TO BE send: ', send_yaw, send_pitch)
     else:
         assert('Illeagal data')
