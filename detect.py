@@ -160,7 +160,7 @@ def main():
     # default_model = 'mobilenet_ssd_v2_face_quant_postprocess_edgetpu.tflite'
     # default_labels = 'face_labels.txt'
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d', help='debug mode')
+    parser.add_argument('-d', '--debug', action="store_true", help='enable debug mode')
     parser.add_argument('--model', help='.tflite model path',
                         default=os.path.join(default_model_dir, default_model))
     parser.add_argument('--labels', help='label file path',
@@ -172,7 +172,7 @@ def main():
 
     args = parser.parse_args()
 
-    if args.d:
+    if args.d or args.debug:
         DEBUG = True
         print("Debug mode is on!")
     print("Loading model:", default_model)
