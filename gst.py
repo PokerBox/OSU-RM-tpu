@@ -121,18 +121,23 @@ def run_pipeline(debug, user_function,
                         src_caps=src_caps, sink_caps=sink_caps,
                         sink_element=SINK_ELEMENT)
 
-    print("Preparing streamer pipeline")
-    print("Camera resolution", src_size[0],
-          src_size[1], "Frame rate", FRAME_RATE)
-    print(pipeline)
-    pipeline = Gst.parse_launch(pipeline)
-
-    overlay = pipeline.get_by_name('overlay')
-    appsink = pipeline.get_by_name('appsink')
-    appsink.connect('new-sample', partial(on_new_sample,
-                                          overlay=overlay, screen_size=src_size,
-                                          appsink_size=appsink_size, user_function=user_function))
-    loop = GObject.MainLoop()
+    if debug:
+        print(pipeline)
+        pipeline = Gst.parse_launch(pipeline)
+        overlay = pipeline.get_by_name('overlay')
+        appsink = pipeline.get_by_name('appsink')
+        appsink.connect('new-sample', partial(on_new_sample,
+                                            overlay=overlay, screen_size=src_size,
+                                            appsink_size=appsink_size, user_function=user_function))
+        loop = GObject.MainLoop()
+    else:
+        print("Preparing streamer pipeline")
+        print("Camera resolution", src_size[0],
+              src_size[1], "Frame rate", FRAME_RATE)
+        appsink = pipeline.get_by_name('appsink')
+        appsink.connect('new-sample', partial(on_new_sample, overlay=None, screen_size=src_size,
+                                              appsink_size=appsink_size, user_function=user_function))
+        loop = GObject.MainLoop()
 
     # Set up a pipeline bus watch to catch errors.
     bus = pipeline.get_bus()
