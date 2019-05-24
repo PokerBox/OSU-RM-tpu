@@ -169,5 +169,6 @@ def run_pipeline(debug, user_function,
 
     # Clean up.
     pipeline.set_state(Gst.State.NULL)
+    print('hello')
     while GLib.MainContext.default().iteration(False):
         pass
