@@ -77,18 +77,17 @@ def run_pipeline(user_function,
                  appsink_size=(300, 300)):
     PIPELINE = 'v4l2src device=/dev/video1 ! {src_caps} ! {leaky_q} '
     SRC_CAPS = 'video/x-raw,format=YUY2,width={width},height={height},framerate={frame_rate}/1'
-    PIPELINE += """ ! glupload ! tee name=t
-        t. ! {leaky_q} ! glfilterbin filter=glcolorscale
-            ! videoconvert n-threads=4 ! {sink_caps} ! {sink_element} ! ximagesink 
+    PIPELINE += """ ! glupload ! {leaky_q} ! glfilterbin filter=glcolorscale
+            ! videoconvert n-threads=4 ! {sink_caps} ! {sink_element}
     """
 
     SINK_ELEMENT = 'appsink name=appsink sync=false emit-signals=true max-buffers=1 drop=true'
-    SINK_CAPS = 'video/x-raw,format=RGB'
+    SINK_CAPS = 'video/x-raw,format=RGB,width={width},height={height}'
     LEAKY_Q = 'queue max-size-buffers=1 leaky=downstream'
 
     src_caps = SRC_CAPS.format(
         width=src_size[0], height=src_size[1], frame_rate=FRAME_RATE)
-    sink_caps = SINK_CAPS#.format(width=appsink_size[0], height=appsink_size[1])
+    sink_caps = SINK_CAPS.format(width=appsink_size[0], height=appsink_size[1])
     pipeline = PIPELINE.format(leaky_q=LEAKY_Q,
                                src_caps=src_caps, sink_caps=sink_caps,
                                sink_element=SINK_ELEMENT)
