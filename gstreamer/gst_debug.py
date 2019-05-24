@@ -114,8 +114,9 @@ def run_pipeline(user_function,
     print("Preparing streamer pipeline")
     print("Camera resolution", src_size[0],
           src_size[1], "Frame rate", FRAME_RATE)
-    pipeline = Gst.parse_launch(pipeline)
     print(pipeline)
+    pipeline = Gst.parse_launch(pipeline)
+    
 
     overlay = pipeline.get_by_name('overlay')
     appsink = pipeline.get_by_name('appsink')
