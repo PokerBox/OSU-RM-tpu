@@ -21,7 +21,7 @@ import svgwrite
 import imp
 import os
 from edgetpu.detection.engine import DetectionEngine
-import gst
+import gstreamer
 import math
 from can.interfaces import slcan
 from can import Message
@@ -161,7 +161,7 @@ def main():
                         default=os.path.join(default_model_dir, default_labels))
     parser.add_argument('--top_k', type=int, default=5,
                         help='number of classes with highest score to display')
-    parser.add_argument('--threshold', type=float, default=0.05,
+    parser.add_argument('--threshold', type=float, default=0.1,
                         help='class score threshold')
 
     args = parser.parse_args()
@@ -232,7 +232,7 @@ def main():
             generate_svg(svg_canvas, objs, labels, text_lines)
 
     try:
-        result = gst.run_pipeline(DEBUG, user_callback)
+        result = gstreamer.run_pipeline(DEBUG, user_callback)
     finally:
         closeCAN
 
