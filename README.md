@@ -28,7 +28,7 @@ python3 detect.py
 
 - You can enable debug mode by
 ```
-python3 detect.py debug
+python3 detect.py -d
 ```
 This will render a video stream with the detected object on your screen but the performance will be suppressed. 
 
