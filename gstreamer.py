@@ -170,6 +170,6 @@ def run_pipeline(debug, user_function,
 
     # Clean up.
     pipeline.set_state(Gst.State.NULL)
-    closeCAN
+    # closeCAN
     while GLib.MainContext.default().iteration(False):
         pass
