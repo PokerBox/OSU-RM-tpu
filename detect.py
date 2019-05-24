@@ -112,9 +112,9 @@ def sendMessage(dev, yaw, pitch):
     if len(send_data) == 8 and dev is not None:
         dev.send(Message(arbitration_id=0x300, dlc=8,
                          data=send_data, extended_id=False))
-        print('Send: ', send_yaw, send_pitch)
+        print('Send:', send_yaw, send_pitch)
     elif dev is None:
-        print('TO BE send: ', send_yaw, send_pitch)
+        print('TO BE send:', send_yaw, send_pitch)
     else:
         assert('Illeagal data')
 
