@@ -21,7 +21,7 @@ import svgwrite
 import imp
 import os
 from edgetpu.detection.engine import DetectionEngine
-import gstreamer
+import gst
 import math
 from can.interfaces import slcan
 from can import Message
@@ -230,7 +230,7 @@ def main():
             generate_svg(svg_canvas, objs, labels, text_lines)
 
     try:
-        result = gstreamer.run_pipeline(user_callback)
+        result = gst.run_pipeline(user_callback)
     finally:
         closeCAN
 
