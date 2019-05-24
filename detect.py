@@ -237,7 +237,7 @@ def main():
             generate_svg(svg_canvas, objs, labels, text_lines)
 
     try:
-        result = gst.run_pipeline(user_callback)
+        result = gst.run_pipeline(DEBUG, user_callback)
     finally:
         closeCAN
 

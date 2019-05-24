@@ -75,38 +75,51 @@ def detectCoralDevBoard():
     return False
 
 
-def run_pipeline(user_function,
+def run_pipeline(debug, user_function,
                  src_size=(X_PIXEL, Y_PIXEL),
                  appsink_size=(480, 480)):
     PIPELINE = 'v4l2src device=/dev/video1 ! {src_caps} ! {leaky_q} '
-    if detectCoralDevBoard():
-        SRC_CAPS = 'video/x-raw,format=YUY2,width={width},height={height},framerate={frame_rate}/1'
-        PIPELINE += """ ! glupload ! tee name=t
-            t. ! {leaky_q} ! glfilterbin filter=glcolorscale
-               ! {dl_caps} ! videoconvert ! {sink_caps} ! {sink_element}
-            t. ! {leaky_q} ! glfilterbin filter=glcolorscale
-               ! rsvgoverlay name=overlay ! waylandsink
-        """
-    else:
-        SRC_CAPS = 'video/x-raw,width={width},height={height},framerate={frame_rate}/1'
-        PIPELINE += """ ! tee name=t
-            t. ! {leaky_q} ! videoconvert ! videoscale ! {sink_caps} ! {sink_element}
-            t. ! {leaky_q} ! videoconvert
-               ! rsvgoverlay name=overlay ! videoconvert ! ximagesink
+    if debug:
+        if detectCoralDevBoard():
+            SRC_CAPS = 'video/x-raw,format=YUY2,width={width},height={height},framerate={frame_rate}/1'
+            PIPELINE += """ ! glupload ! tee name=t
+                t. ! {leaky_q} ! glfilterbin filter=glcolorscale
+                ! {dl_caps} ! videoconvert ! {sink_caps} ! {sink_element}
+                t. ! {leaky_q} ! glfilterbin filter=glcolorscale
+                ! rsvgoverlay name=overlay ! waylandsink
             """
+        else:
+            SRC_CAPS = 'video/x-raw,width={width},height={height},framerate={frame_rate}/1'
+            PIPELINE += """ ! tee name=t
+                t. ! {leaky_q} ! videoconvert ! videoscale ! {sink_caps} ! {sink_element}
+                t. ! {leaky_q} ! videoconvert
+                ! rsvgoverlay name=overlay ! videoconvert ! ximagesink
+                """
+    else:
+        SRC_CAPS = 'video/x-raw,format=YUY2,width={width},height={height},framerate={frame_rate}/1'
+        PIPELINE += """ ! glupload ! {leaky_q} ! glfilterbin filter=glcolorscale
+                ! videoconvert n-threads=4 ! {sink_caps} ! {sink_element}
+        """
 
     SINK_ELEMENT = 'appsink name=appsink sync=false emit-signals=true max-buffers=1 drop=true'
     DL_CAPS = 'video/x-raw,format=RGBA,width={width},height={height}'
     SINK_CAPS = 'video/x-raw,format=RGB,width={width},height={height}'
     LEAKY_Q = 'queue max-size-buffers=1 leaky=downstream'
 
-    src_caps = SRC_CAPS.format(
-        width=src_size[0], height=src_size[1], frame_rate=FRAME_RATE)
-    dl_caps = DL_CAPS.format(width=appsink_size[0], height=appsink_size[1])
-    sink_caps = SINK_CAPS.format(width=appsink_size[0], height=appsink_size[1])
-    pipeline = PIPELINE.format(leaky_q=LEAKY_Q,
-                               src_caps=src_caps, dl_caps=dl_caps, sink_caps=sink_caps,
-                               sink_element=SINK_ELEMENT)
+
+    if debug:
+        src_caps = SRC_CAPS.format(width=src_size[0], height=src_size[1], frame_rate=FRAME_RATE)
+        dl_caps = DL_CAPS.format(width=appsink_size[0], height=appsink_size[1])
+        sink_caps = SINK_CAPS.format(width=appsink_size[0], height=appsink_size[1])
+        pipeline = PIPELINE.format(leaky_q=LEAKY_Q,
+                                src_caps=src_caps, dl_caps=dl_caps, sink_caps=sink_caps,
+                                sink_element=SINK_ELEMENT)
+    else:
+        src_caps = SRC_CAPS.format(width=src_size[0], height=src_size[1], frame_rate=FRAME_RATE)
+        sink_caps = SINK_CAPS.format(width=appsink_size[0], height=appsink_size[1])
+        pipeline = PIPELINE.format(leaky_q=LEAKY_Q,
+                        src_caps=src_caps, sink_caps=sink_caps,
+                        sink_element=SINK_ELEMENT)
 
     print("Preparing streamer pipeline")
     print("Camera resolution", src_size[0],
