@@ -53,7 +53,7 @@ def on_new_sample(sink, appsink_size, user_function):
     buf = sample.get_buffer()
     result, mapinfo = buf.map(Gst.MapFlags.READ)
     if result:
-        img = Image.frombytes('RGB', (640, 480), mapinfo.data, 'raw')
+        img = Image.frombytes('RGB', (300,300), mapinfo.data, 'raw')
         # img.resize((300, 300), Image.NEAREST)
         if ROTATE_180:
             img = img.rotate(180)
