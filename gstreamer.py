@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from can.interfaces import slcan
 import gi
 gi.require_version('Gst', '1.0')
 gi.require_version('GstBase', '1.0')
@@ -21,7 +22,6 @@ import svgwrite
 from functools import partial
 import sys
 from PIL import Image
-# import closeCAN
 
 X_PIXEL = 640
 Y_PIXEL = 480
@@ -169,7 +169,17 @@ def run_pipeline(debug, user_function,
         pass
 
     # Clean up.
-    pipeline.set_state(Gst.State.NULL)
-    # closeCAN
+    try:
+        print("Closing CANBUS on ttyACM0...")
+        port = slcan.slcanBus("/dev/ttyACM0", bitrate=1000000)
+    except:
+        print("Can not find ttyACM0, closing ttyACM1...")
+        port = slcan.slcanBus("/dev/ttyACM1", bitrate=1000000)
+        port.close()
+        print("CANBUS ttyACM1 Closed")
+    else:
+        port.close()
+        print("CANBUS ttyACMO Closed")
+        pipeline.set_state(Gst.State.NULL)
     while GLib.MainContext.default().iteration(False):
         pass
