@@ -125,7 +125,7 @@ def run_pipeline(debug, user_function,
         pipeline = Gst.parse_launch(pipeline)
         overlay = pipeline.get_by_name('overlay')
         appsink = pipeline.get_by_name('appsink')
-        appsink.connect('new-sample', partial(on_new_sample, debug=True,
+        appsink.connect('new-sample', partial(on_new_sample, True,
                                               overlay=overlay, screen_size=src_size,
                                               appsink_size=appsink_size, user_function=user_function))
         loop = GObject.MainLoop()
@@ -151,7 +151,7 @@ def run_pipeline(debug, user_function,
               src_size[1], "Frame rate", FRAME_RATE)
         pipeline = Gst.parse_launch(pipeline)
         appsink = pipeline.get_by_name('appsink')
-        appsink.connect('new-sample', partial(on_new_sample, debug=False, 
+        appsink.connect('new-sample', partial(on_new_sample, False, 
                                               appsink_size=appsink_size, user_function=user_function))
         loop = GObject.MainLoop()
 
