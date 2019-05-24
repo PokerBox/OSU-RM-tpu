@@ -231,10 +231,7 @@ def main():
         if DEBUG:
             generate_svg(svg_canvas, objs, labels, text_lines)
 
-    try:
-        result = gstreamer.run_pipeline(DEBUG, user_callback)
-    finally:
-        closeCAN
-
+    result = gstreamer.run_pipeline(DEBUG, user_callback)
+        
 if __name__ == '__main__':
     main()

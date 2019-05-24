@@ -21,6 +21,7 @@ import svgwrite
 from functools import partial
 import sys
 from PIL import Image
+import closeCAN
 
 X_PIXEL = 640
 Y_PIXEL = 480
@@ -169,6 +170,6 @@ def run_pipeline(debug, user_function,
 
     # Clean up.
     pipeline.set_state(Gst.State.NULL)
-    print('hello')
+    closeCAN
     while GLib.MainContext.default().iteration(False):
         pass
