@@ -13,17 +13,19 @@
 # limitations under the License.
 
 import gi
+gi.require_version('Gst', '1.0')
+gi.require_version('GstBase', '1.0')
+from gi.repository import GLib, GObject, Gst, GstBase
 import time
 import svgwrite
 from functools import partial
 import sys
-from gi.repository import GLib, GObject, Gst, GstBase
-from PIL import Image
-import warnings
-warnings.filterwarnings("ignore")
 
-gi.require_version('Gst', '1.0')
-gi.require_version('GstBase', '1.0')
+from PIL import Image
+# import warnings
+# warnings.filterwarnings("ignore")
+
+
 
 X_PIXEL = 640
 Y_PIXEL = 480
