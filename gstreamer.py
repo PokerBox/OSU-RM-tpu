@@ -169,6 +169,11 @@ def run_pipeline(debug, user_function,
         pass
 
     # Clean up.
+    pipeline.set_state(Gst.State.NULL)
+    while GLib.MainContext.default().iteration(False):
+        pass
+    
+    # Close CAN bus
     try:
         print("Closing CANBUS on ttyACM0...")
         port = slcan.slcanBus("/dev/ttyACM0", bitrate=1000000)
@@ -180,6 +185,4 @@ def run_pipeline(debug, user_function,
     else:
         port.close()
         print("CANBUS ttyACMO Closed")
-        pipeline.set_state(Gst.State.NULL)
-    while GLib.MainContext.default().iteration(False):
-        pass
+
