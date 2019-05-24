@@ -88,9 +88,9 @@ def run_pipeline(user_function,
 
     src_caps = SRC_CAPS.format(
         width=src_size[0], height=src_size[1], frame_rate=FRAME_RATE)
-    # sink_caps = SINK_CAPS.format(width=appsink_size[0], height=appsink_size[1])
+    sink_caps = SINK_CAPS#.format(width=appsink_size[0], height=appsink_size[1])
     pipeline = PIPELINE.format(leaky_q=LEAKY_Q,
-                               src_caps=src_caps, sink_caps=sink_caps,
+                               src_caps=src_caps, 
                                sink_element=SINK_ELEMENT)
 
     print('Gstreamer pipeline: ', pipeline)
