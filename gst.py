@@ -45,24 +45,37 @@ def on_bus_message(bus, message, loop):
     return True
 
 
-def on_new_sample(sink, overlay, screen_size, appsink_size, user_function):
-    sample = sink.emit('pull-sample')
-    buf = sample.get_buffer()
-    result, mapinfo = buf.map(Gst.MapFlags.READ)
-    if result:
-        img = Image.frombytes(
-            'RGB', (appsink_size[0], appsink_size[1]), mapinfo.data, 'raw')
-        if ROTATE_180:
-            img = img.rotate(180)
-        svg_canvas = svgwrite.Drawing(
-            '', size=(screen_size[0], screen_size[1]))
-        img.save("img1.png", "PNG")
-        print('image saved, sleeping 10 seconds')
-        time.sleep(10)
-        user_function(img, svg_canvas)
-        overlay.set_property('data', svg_canvas.tostring())
-    buf.unmap(mapinfo)
-    return Gst.FlowReturn.OK
+def on_new_sample(debug, sink, overlay, screen_size, appsink_size, user_function):
+    if debug:
+        sample = sink.emit('pull-sample')
+        buf = sample.get_buffer()
+        result, mapinfo = buf.map(Gst.MapFlags.READ)
+        if result:
+            img = Image.frombytes(
+                'RGB', (appsink_size[0], appsink_size[1]), mapinfo.data, 'raw')
+            if ROTATE_180:
+                img = img.rotate(180)
+            svg_canvas = svgwrite.Drawing(
+                '', size=(screen_size[0], screen_size[1]))
+            img.save("img1.png", "PNG")
+            print('image saved, sleeping 5 seconds')
+            time.sleep(5)
+            user_function(img, svg_canvas)
+            overlay.set_property('data', svg_canvas.tostring())
+        buf.unmap(mapinfo)
+        return Gst.FlowReturn.OK
+    else:
+        sample = sink.emit('pull-sample')
+        buf = sample.get_buffer()
+        result, mapinfo = buf.map(Gst.MapFlags.READ)
+        if result:
+            img = Image.frombytes(
+                'RGB', (appsink_size[0], appsink_size[1]), mapinfo.data, 'raw')
+            if ROTATE_180:
+                img = img.rotate(180)
+            user_function(img, None)
+        buf.unmap(mapinfo)
+        return Gst.FlowReturn.OK
 
 
 def detectCoralDevBoard():
@@ -95,48 +108,50 @@ def run_pipeline(debug, user_function,
                 t. ! {leaky_q} ! videoconvert
                 ! rsvgoverlay name=overlay ! videoconvert ! ximagesink
                 """
+        SINK_ELEMENT = 'appsink name=appsink sync=false emit-signals=true max-buffers=1 drop=true'
+        DL_CAPS = 'video/x-raw,format=RGBA,width={width},height={height}'
+        SINK_CAPS = 'video/x-raw,format=RGB,width={width},height={height}'
+        LEAKY_Q = 'queue max-size-buffers=1 leaky=downstream'
+        
+        src_caps = SRC_CAPS.format(
+            width=src_size[0], height=src_size[1], frame_rate=FRAME_RATE)
+        dl_caps = DL_CAPS.format(width=appsink_size[0], height=appsink_size[1])
+        sink_caps = SINK_CAPS.format(
+            width=appsink_size[0], height=appsink_size[1])
+        pipeline = PIPELINE.format(leaky_q=LEAKY_Q,
+                                   src_caps=src_caps, dl_caps=dl_caps, sink_caps=sink_caps,
+                                   sink_element=SINK_ELEMENT)
+        print(pipeline)
+        pipeline = Gst.parse_launch(pipeline)
+        overlay = pipeline.get_by_name('overlay')
+        appsink = pipeline.get_by_name('appsink')
+        appsink.connect('new-sample', partial(on_new_sample, debug=debug,
+                                              overlay=overlay, screen_size=src_size,
+                                              appsink_size=appsink_size, user_function=user_function))
+        loop = GObject.MainLoop()
+
     else:
         SRC_CAPS = 'video/x-raw,format=YUY2,width={width},height={height},framerate={frame_rate}/1'
         PIPELINE += """ ! glupload ! {leaky_q} ! glfilterbin filter=glcolorscale
                 ! videoconvert n-threads=4 ! {sink_caps} ! {sink_element}
         """
+        SINK_ELEMENT = 'appsink name=appsink sync=false emit-signals=true max-buffers=1 drop=true'
+        SINK_CAPS = 'video/x-raw,format=RGB,width={width},height={height}'
+        LEAKY_Q = 'queue max-size-buffers=1 leaky=downstream'
 
-    SINK_ELEMENT = 'appsink name=appsink sync=false emit-signals=true max-buffers=1 drop=true'
-    DL_CAPS = 'video/x-raw,format=RGBA,width={width},height={height}'
-    SINK_CAPS = 'video/x-raw,format=RGB,width={width},height={height}'
-    LEAKY_Q = 'queue max-size-buffers=1 leaky=downstream'
-
-
-    if debug:
-        src_caps = SRC_CAPS.format(width=src_size[0], height=src_size[1], frame_rate=FRAME_RATE)
-        dl_caps = DL_CAPS.format(width=appsink_size[0], height=appsink_size[1])
-        sink_caps = SINK_CAPS.format(width=appsink_size[0], height=appsink_size[1])
+        src_caps = SRC_CAPS.format(
+            width=src_size[0], height=src_size[1], frame_rate=FRAME_RATE)
+        sink_caps = SINK_CAPS.format(
+            width=appsink_size[0], height=appsink_size[1])
         pipeline = PIPELINE.format(leaky_q=LEAKY_Q,
-                                src_caps=src_caps, dl_caps=dl_caps, sink_caps=sink_caps,
-                                sink_element=SINK_ELEMENT)
-    else:
-        src_caps = SRC_CAPS.format(width=src_size[0], height=src_size[1], frame_rate=FRAME_RATE)
-        sink_caps = SINK_CAPS.format(width=appsink_size[0], height=appsink_size[1])
-        pipeline = PIPELINE.format(leaky_q=LEAKY_Q,
-                        src_caps=src_caps, sink_caps=sink_caps,
-                        sink_element=SINK_ELEMENT)
-
-    if debug:
-        print(pipeline)
-        pipeline = Gst.parse_launch(pipeline)
-        overlay = pipeline.get_by_name('overlay')
-        appsink = pipeline.get_by_name('appsink')
-        appsink.connect('new-sample', partial(on_new_sample,
-                                            overlay=overlay, screen_size=src_size,
-                                            appsink_size=appsink_size, user_function=user_function))
-        loop = GObject.MainLoop()
-    else:
+                                   src_caps=src_caps, sink_caps=sink_caps,
+                                   sink_element=SINK_ELEMENT)
         print("Preparing streamer pipeline")
         print("Camera resolution", src_size[0],
               src_size[1], "Frame rate", FRAME_RATE)
         pipeline = Gst.parse_launch(pipeline)
         appsink = pipeline.get_by_name('appsink')
-        appsink.connect('new-sample', partial(on_new_sample, overlay=None, screen_size=src_size,
+        appsink.connect('new-sample', partial(on_new_sample, debug=debug, 
                                               appsink_size=appsink_size, user_function=user_function))
         loop = GObject.MainLoop()
 
