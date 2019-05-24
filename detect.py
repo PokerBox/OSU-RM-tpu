@@ -167,6 +167,7 @@ def main():
     args = parser.parse_args()
 
     if args.d:
+        global DEBUG 
         DEBUG = True
         print("Debug mode is on!")
     print("Loading model:", default_model)
