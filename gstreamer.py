@@ -25,7 +25,7 @@ from PIL import Image
 
 X_PIXEL = 640
 Y_PIXEL = 480
-FRAME_RATE = 30
+FRAME_RATE = 60
 ROTATE_180 = True
 
 GObject.threads_init()
@@ -58,9 +58,9 @@ def on_new_sample(debug, sink, overlay, screen_size, appsink_size, user_function
                 img = img.rotate(180)
             svg_canvas = svgwrite.Drawing(
                 '', size=(screen_size[0], screen_size[1]))
-            img.save("img1.png", "PNG")
-            print('image saved, sleeping 5 seconds')
-            time.sleep(5)
+            # img.save("img1.png", "PNG")
+            # print('image saved, sleeping 5 seconds')
+            # time.sleep(5)
             user_function(img, svg_canvas)
             overlay.set_property('data', svg_canvas.tostring())
         buf.unmap(mapinfo)
