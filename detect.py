@@ -26,8 +26,8 @@ import math
 from can.interfaces import slcan
 from can import Message
 
-YAW_MID = 0
-PITCH_MID = 0
+YAW_MID = 900
+PITCH_MID = 300
 X_PIXEL = 640
 Y_PIXEL = 480
 # Yaw and pitch send when no object detected
@@ -111,7 +111,7 @@ def sendMessage(dev, yaw, pitch):
     if len(send_data) == 8 and dev is not None:
         dev.send(Message(arbitration_id=0x300, dlc=8,
                          data=send_data, extended_id=False))
-        print('Send:', send_yaw, send_pitch)
+        print('Send:', send_yaw-900, send_pitch-300)
     elif dev is None:
         print('TO BE send:', send_yaw, send_pitch)
     else:
