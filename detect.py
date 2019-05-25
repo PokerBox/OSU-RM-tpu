@@ -26,8 +26,8 @@ import math
 from can.interfaces import slcan
 from can import Message
 
-YAW_MID = 900
-PITCH_MID = 300
+YAW_MID = 0
+PITCH_MID = 0
 X_PIXEL = 640
 Y_PIXEL = 480
 # Yaw and pitch send when no object detected
