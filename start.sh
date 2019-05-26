@@ -1,2 +1,3 @@
 #!/bin/bash
+echo Starting detect.py...
 python3 detect.py
