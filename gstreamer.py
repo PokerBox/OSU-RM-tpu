@@ -25,7 +25,7 @@ from PIL import Image
 
 X_PIXEL = 640
 Y_PIXEL = 480
-FRAME_RATE = 60
+FRAME_RATE = 30
 ROTATE_180 = True
 
 GObject.threads_init()
