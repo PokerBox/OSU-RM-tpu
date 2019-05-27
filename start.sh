@@ -8,4 +8,4 @@ export GNOME_DESKTOP_SESSION_ID=true
 export DBUS_SESSION_BUS_ADDRESS=$(sed -zne 's/^DBUS_SESSION_BUS_ADDRESS=//p' /proc/`pgrep gnome-session -U $(id -u)`/environ)
 
 #Open new terminal and execute the script:
-/usr/bin/gnome-terminal -x sh -c 'cd /home/mendel/OSU-RM-tpu && python3 detect.py'
+/usr/bin/weston-terminal -x sh -c 'cd /home/mendel/OSU-RM-tpu && python3 detect.py'
