@@ -8,4 +8,4 @@ export DISPLAY=0
 # export DBUS_SESSION_BUS_ADDRESS=$(sed -zne 's/^DBUS_SESSION_BUS_ADDRESS=//p' /proc/`pgrep gnome-session -U $(id -u)`/environ)
 
 #Open new terminal and execute the script:
-/usr/bin/weston-terminal -f sh -c 'cd /home/mendel/OSU-RM-tpu && python3 detect.py'
+/usr/bin/weston-terminal --fullscreen sh -c 'cd /home/mendel/OSU-RM-tpu && python3 detect.py'
