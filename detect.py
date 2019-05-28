@@ -25,6 +25,7 @@ import gstreamer
 import math
 from can.interfaces import slcan
 from can import Message
+import GPIO
 
 YAW_MID = 900
 PITCH_MID = 300
@@ -42,6 +43,8 @@ CAMERA_PARAM = 700
 
 # Choose among 0(red), 1(blue), or 'None'
 ENEMY_COLOR = None
+
+# LED = GPIO(12, GPIO.OUT)
 
 PORT = ["/dev/ttyACM0", "/dev/ttyACM1"]
 DEBUG = False
@@ -112,6 +115,7 @@ def sendMessage(dev, yaw, pitch):
         dev.send(Message(arbitration_id=0x300, dlc=8,
                          data=send_data, extended_id=False))
         print('Send:', send_yaw-900, send_pitch-300)
+        # LED.write(1)
     elif dev is None:
         print('TO BE send:', send_yaw, send_pitch)
     else:
