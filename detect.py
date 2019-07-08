@@ -25,7 +25,6 @@ import gstreamer
 import math
 from can.interfaces import slcan
 from can import Message
-import GPIO
 
 YAW_MID = 900
 PITCH_MID = 300
