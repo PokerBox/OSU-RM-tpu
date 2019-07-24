@@ -151,9 +151,9 @@ def choose_obj(objs, start_time):
 
 def main():
     default_model_dir = 'models'
-    default_model = '2019_05_13_whole(1)/output_tflite_graph_1557776948_edgetpu.tflite'
+    # default_model = '2019_05_13_whole(1)/output_tflite_graph_1557776948_edgetpu.tflite'
     # default_model = '2/output_tflite_graph_edgetpu.tflite'
-    # default_model = '3/output_tflite_graph_edgetpu.tflite'
+    default_model = '3/output_tflite_graph_edgetpu.tflite'
     default_labels = 'armor_plate_labels.txt'
     # default_model = 'mobilenet_ssd_v2_face_quant_postprocess_edgetpu.tflite'
     # default_labels = 'face_labels.txt'
