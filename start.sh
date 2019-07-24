@@ -11,4 +11,4 @@ export XDG_RUNTIME_DIR=/run/user/1000
 
 #Open new terminal and execute the script:
 # weston #&& /usr/bin/weston-terminal --fullscreen && sh cd /home/mendel/OSU-RM-tpu && python3 detect.py
-cd /home/mendel/OSU-RM-tpu && python3 dete-ct.py
+cd /home/mendel/OSU-RM-tpu && python3 detect.py
