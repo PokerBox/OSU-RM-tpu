@@ -25,7 +25,6 @@ import gstreamer
 import math
 from can.interfaces import slcan
 from can import Message
-import GPIO
 
 YAW_MID = 900
 PITCH_MID = 300
@@ -39,7 +38,7 @@ DEFAULT_PITCH = 9999
 # BLACK GLOBLE SHUTTER: 740x416 416
 # BLUE CAMERA 320x240 300
 # BLACK YUYV CAMERA 640x480 700
-CAMERA_PARAM = 700
+CAMERA_PARAM = 675
 
 # Choose among 0(red), 1(blue), or 'None'
 ENEMY_COLOR = None
@@ -114,7 +113,7 @@ def sendMessage(dev, yaw, pitch):
     if len(send_data) == 8 and dev is not None:
         dev.send(Message(arbitration_id=0x300, dlc=8,
                          data=send_data, extended_id=False))
-        print('Send:', send_yaw-900, send_pitch-300)
+        print('Send:', send_yaw, send_pitch)
         # LED.write(1)
     elif dev is None:
         print('TO BE send:', send_yaw, send_pitch)
@@ -152,7 +151,10 @@ def choose_obj(objs, start_time):
 
 def main():
     default_model_dir = 'models'
-    default_model = '2019_05_13_whole/output_tflite_graph_1557776948_edgetpu.tflite'
+    # default_model = '2019_05_13_whole(1)/output_tflite_graph_1557776948_edgetpu.tflite'
+    # default_model = '2/output_tflite_graph_edgetpu.tflite'
+    # default_model = '3/output_tflite_graph_edgetpu.tflite'
+    default_model = '4/output_tflite_graph_edgetpu.tflite'
     default_labels = 'armor_plate_labels.txt'
     # default_model = 'mobilenet_ssd_v2_face_quant_postprocess_edgetpu.tflite'
     # default_labels = 'face_labels.txt'
