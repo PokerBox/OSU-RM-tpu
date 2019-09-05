@@ -67,6 +67,7 @@ def generate_svg(dwg, objs, labels, text_lines):
         shadow_text(dwg, 10, y*20, line)
     for obj in objs:
         x0, y0, x1, y1 = obj.bounding_box.flatten().tolist()
+        # TODO: Render the recieved video upside down
         # For demonstration, align the box wih object if upside down
         x0 = 1 - x0
         y0 = 1 - y0
@@ -161,6 +162,7 @@ def main():
     # default_model = '2/output_tflite_graph_edgetpu.tflite'
     # default_model = '3/output_tflite_graph_edgetpu.tflite'
     default_model = '4/output_tflite_graph_edgetpu.tflite'
+    # more to come...
     default_labels = 'armor_plate_labels.txt'
     # default_model = 'mobilenet_ssd_v2_face_quant_postprocess_edgetpu.tflite'
     # default_labels = 'face_labels.txt'
