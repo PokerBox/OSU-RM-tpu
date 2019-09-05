@@ -67,7 +67,13 @@ def generate_svg(dwg, objs, labels, text_lines):
         shadow_text(dwg, 10, y*20, line)
     for obj in objs:
         x0, y0, x1, y1 = obj.bounding_box.flatten().tolist()
-        x, y, w, h = x0, y0, x1 - x0, y1 - y0
+        # For demonstration, align the box wih object if upside down
+        x0 = 1 - x0
+        y0 = 1 - y0
+        x1 = 1 - x1
+        y1 = 1 - y1
+        x, y, w, h = x1, y1, x0 - x1, y0 - y1
+        # x, y, w, h = x0, y0, x1 - x0, y1 - y0
         x, y, w, h = int(x * width), int(y *
                                          height), int(w * width), int(h * height)
         percent = int(100 * obj.score)
